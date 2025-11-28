@@ -1,0 +1,10 @@
+SUMMARY:
+	ROM0: 82 bytes used / 16302 free
+
+ROM0 bank #0:
+	SECTION: $0000-$0001 ($0002 bytes) ["Entry point"]
+	         $0000 = EntryPoint
+	EMPTY: $0002-$00ff ($00fe bytes)
+	SECTION: $0100-$014f ($0050 bytes) ["Header"]
+	EMPTY: $0150-$3fff ($3eb0 bytes)
+	TOTAL EMPTY: $3fae bytes

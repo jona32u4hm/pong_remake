@@ -1,0 +1,17 @@
+SUMMARY:
+	ROM0: 96 bytes used / 16288 free
+
+ROM0 bank #0:
+	SECTION: $0000 ($0000 bytes) ["Tiles"]
+	         $0000 = Tiles
+	         $0000 = TilesEnd
+	SECTION: $0000-$000d ($000e bytes) ["Memory Routines"]
+	         $0000 = memLoad
+	         $0004 = memLoad.loop
+	         $0007 = memLoad.skip
+	SECTION: $000e-$000f ($0002 bytes) ["Entry point"]
+	         $000e = EntryPoint
+	EMPTY: $0010-$00ff ($00f0 bytes)
+	SECTION: $0100-$014f ($0050 bytes) ["Header"]
+	EMPTY: $0150-$3fff ($3eb0 bytes)
+	TOTAL EMPTY: $3fa0 bytes
