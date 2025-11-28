@@ -1,17 +1,46 @@
 SUMMARY:
-	ROM0: 96 bytes used / 16288 free
+	ROM0: 2106 bytes used / 14278 free
+	WRAM0: 96 bytes used / 4000 free
+	HRAM: 12 bytes used / 115 free
 
 ROM0 bank #0:
-	SECTION: $0000 ($0000 bytes) ["Tiles"]
-	         $0000 = Tiles
-	         $0000 = TilesEnd
 	SECTION: $0000-$000d ($000e bytes) ["Memory Routines"]
 	         $0000 = memLoad
 	         $0004 = memLoad.loop
 	         $0007 = memLoad.skip
-	SECTION: $000e-$000f ($0002 bytes) ["Entry point"]
-	         $000e = EntryPoint
-	EMPTY: $0010-$00ff ($00f0 bytes)
+	SECTION: $000e-$0019 ($000c bytes) ["VBlank Routine"]
+	         $000e = DMACode
+	         $001a = DMACodeEnd
+	EMPTY: $001a-$003f ($0026 bytes)
+	SECTION: $0040-$0042 ($0003 bytes) ["Vblank"]
+	EMPTY: $0043-$0047 ($0005 bytes)
+	SECTION: $0048-$0048 ($0001 byte) ["LCDC"]
+	EMPTY: $0049-$004f ($0007 bytes)
+	SECTION: $0050-$0050 ($0001 byte) ["Timer"]
+	EMPTY: $0051-$0057 ($0007 bytes)
+	SECTION: $0058-$0058 ($0001 byte) ["Serial"]
+	EMPTY: $0059-$005f ($0007 bytes)
+	SECTION: $0060-$0060 ($0001 byte) ["Joypad"]
+	SECTION: $0061-$00b9 ($0059 bytes) ["Main"]
+	         $0061 = Setup
+	         $0093 = Setup.waitVBlank
+	EMPTY: $00ba-$00ff ($0046 bytes)
 	SECTION: $0100-$014f ($0050 bytes) ["Header"]
-	EMPTY: $0150-$3fff ($3eb0 bytes)
-	TOTAL EMPTY: $3fa0 bytes
+	SECTION: $0150-$08bf ($0770 bytes) ["Tiles"]
+	         $0150 = Tiles
+	         $08c0 = TilesEnd
+	EMPTY: $08c0-$3fff ($3740 bytes)
+	TOTAL EMPTY: $37c6 bytes
+
+WRAM0 bank #0:
+	SECTION: $c000-$c05f ($0060 bytes) ["WRAM"]
+	         $c000 = OAM_Source
+	EMPTY: $c060-$cfff ($0fa0 bytes)
+	TOTAL EMPTY: $0fa0 bytes
+
+HRAM bank #0:
+	SECTION: $ff80-$ff8b ($000c bytes) ["DMA routine"]
+	         $ff80 = VBlankISR
+	         $ff87 = VBlankISR.wait
+	EMPTY: $ff8c-$fffe ($0073 bytes)
+	TOTAL EMPTY: $0073 bytes

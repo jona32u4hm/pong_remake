@@ -12,7 +12,7 @@ RGBLINK = rgblink
 RGBFIX = rgbfix
 
 ASMFLAGS = -Werror # Treat warnings as errors
-LINKFLAGS = -n -l -m $(BUILD_DIR)/$(PROJECT_NAME).map
+LINKFLAGS = -m $(BUILD_DIR)/$(PROJECT_NAME).map -n $(BIN_DIR)/$(PROJECT_NAME).sym 
 FIXFLAGS = -v -f lhg -p 0xFF
 
 # --- File Generation ---

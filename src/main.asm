@@ -1,26 +1,57 @@
 INCLUDE "include/hardware.inc"
 
-SECTION "Header", ROM0[$100]
+SECTION "Main", ROM0
 
-	; This is your ROM's entry point
-	; You have 4 bytes of code to do... something
-	di
-	jp EntryPoint
+Setup::
+	di	; disable interrupts
+	ld	SP, $FFFF
+	
+	;-------- DMA Setup --------
+	ld	de, VBlankISR
+	ld	hl, DMACode
+	ld	bc, DMACodeEnd - DMACode
+	call	memLoad
 
-	; Make sure to allocate some space for the header, so no important
-	; code gets put there and later overwritten by RGBFIX.
-	; RGBFIX is designed to operate over a zero-filled header, so make
-	; sure to put zeros regardless of the padding value. (This feature
-	; was introduced in RGBDS 0.4.0, but the -MG etc flags were also
-	; introduced in that version.)
-	ds $150 - @, 0
+	;set interrupt flags:
+	ld a, IF_VBLANK
+	ld [rIE], a
+	ei
+	;-------- Configure LCD --------
+	ld	a, [rLCDC]	
+	or	LCDC_OBJ_ON	
+	or	LCDC_OBJ_8	
+	ld	[rLCDC], a	
+	;configure palettes
+    ld a, %11100100
+	ld [rBGP], a
+	ld a, %11100100
+	ld [rOBP0], a
+	ld a, %00011011
+	ld [rOBP1], a
+	nop
+	halt
+	nop
+	;------- LOAD TILES --------
+	;stop lcd
+.waitVBlank
+	nop
+    ldh a, [rSTAT]
+	and %11
+	cp %01
+    jr nz, .waitVBlank 
+	ld	a, [rLCDC]
+	and LCDC_OFF	; turn off lcd by toggling 
+	ld	[rLCDC], a	
+	;load tiles
+	ld	hl, Tiles	
+	ld	de, $8000 ;vram tile mem
+	ld	bc, TilesEnd - Tiles
+	call	memLoad
+	;turn LCD ON again
+	ld	a, [rLCDC]
+	or	LCDC_ON
+	ld	[rLCDC], a	
 
-SECTION "Entry point", ROM0
 
-
-
-
-EntryPoint:
-	; Here is where the fun begins, happy coding :)
 	
 	jr @
