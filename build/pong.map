@@ -1,17 +1,20 @@
 SUMMARY:
-	ROM0: 2106 bytes used / 14278 free
+	ROM0: 2535 bytes used / 13849 free
 	WRAM0: 96 bytes used / 4000 free
 	HRAM: 12 bytes used / 115 free
 
 ROM0 bank #0:
-	SECTION: $0000-$000d ($000e bytes) ["Memory Routines"]
+	SECTION: $0000-$0028 ($0029 bytes) ["Memory Routines"]
 	         $0000 = memLoad
 	         $0004 = memLoad.loop
 	         $0007 = memLoad.skip
-	SECTION: $000e-$0019 ($000c bytes) ["VBlank Routine"]
-	         $000e = DMACode
-	         $001a = DMACodeEnd
-	EMPTY: $001a-$003f ($0026 bytes)
+	         $000e = mapLoad
+	         $000e = mapLoad.y
+	         $000f = mapLoad.x
+	SECTION: $0029-$0034 ($000c bytes) ["VBlank Routine"]
+	         $0029 = DMACode
+	         $0035 = DMACodeEnd
+	EMPTY: $0035-$003f ($000b bytes)
 	SECTION: $0040-$0042 ($0003 bytes) ["Vblank"]
 	EMPTY: $0043-$0047 ($0005 bytes)
 	SECTION: $0048-$0048 ($0001 byte) ["LCDC"]
@@ -21,16 +24,18 @@ ROM0 bank #0:
 	SECTION: $0058-$0058 ($0001 byte) ["Serial"]
 	EMPTY: $0059-$005f ($0007 bytes)
 	SECTION: $0060-$0060 ($0001 byte) ["Joypad"]
-	SECTION: $0061-$00b9 ($0059 bytes) ["Main"]
+	SECTION: $0061-$00c5 ($0065 bytes) ["Main"]
 	         $0061 = Setup
 	         $0093 = Setup.waitVBlank
-	EMPTY: $00ba-$00ff ($0046 bytes)
+	EMPTY: $00c6-$00ff ($003a bytes)
 	SECTION: $0100-$014f ($0050 bytes) ["Header"]
-	SECTION: $0150-$08bf ($0770 bytes) ["Tiles"]
+	SECTION: $0150-$0a45 ($08f6 bytes) ["Tiles"]
 	         $0150 = Tiles
+	         $08c0 = Tennis
 	         $08c0 = TilesEnd
-	EMPTY: $08c0-$3fff ($3740 bytes)
-	TOTAL EMPTY: $37c6 bytes
+	         $0a46 = TennisEnd
+	EMPTY: $0a46-$3fff ($35ba bytes)
+	TOTAL EMPTY: $3619 bytes
 
 WRAM0 bank #0:
 	SECTION: $c000-$c05f ($0060 bytes) ["WRAM"]

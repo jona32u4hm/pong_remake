@@ -40,13 +40,19 @@ Setup::
 	cp %01
     jr nz, .waitVBlank 
 	ld	a, [rLCDC]
-	and LCDC_OFF	; turn off lcd by toggling 
+	and ~LCDC_ON 
 	ld	[rLCDC], a	
 	;load tiles
 	ld	hl, Tiles	
 	ld	de, $8000 ;vram tile mem
 	ld	bc, TilesEnd - Tiles
 	call	memLoad
+	;load vram map for tenniscourt
+	ld	hl, Tennis
+	ld	de, $9800
+	ld	bc, $1412 ;20 x 18 ($15 -1 x $13 -1)
+	call mapLoad
+
 	;turn LCD ON again
 	ld	a, [rLCDC]
 	or	LCDC_ON
