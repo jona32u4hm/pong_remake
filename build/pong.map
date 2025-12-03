@@ -1,20 +1,20 @@
 SUMMARY:
-	ROM0: 2535 bytes used / 13849 free
+	ROM0: 2536 bytes used / 13848 free
 	WRAM0: 96 bytes used / 4000 free
 	HRAM: 12 bytes used / 115 free
 
 ROM0 bank #0:
-	SECTION: $0000-$0028 ($0029 bytes) ["Memory Routines"]
+	SECTION: $0000-$0029 ($002a bytes) ["Memory Routines"]
 	         $0000 = memLoad
 	         $0004 = memLoad.loop
 	         $0007 = memLoad.skip
 	         $000e = mapLoad
 	         $000e = mapLoad.y
 	         $000f = mapLoad.x
-	SECTION: $0029-$0034 ($000c bytes) ["VBlank Routine"]
-	         $0029 = DMACode
-	         $0035 = DMACodeEnd
-	EMPTY: $0035-$003f ($000b bytes)
+	SECTION: $002a-$0035 ($000c bytes) ["VBlank Routine"]
+	         $002a = DMACode
+	         $0036 = DMACodeEnd
+	EMPTY: $0036-$003f ($000a bytes)
 	SECTION: $0040-$0042 ($0003 bytes) ["Vblank"]
 	EMPTY: $0043-$0047 ($0005 bytes)
 	SECTION: $0048-$0048 ($0001 byte) ["LCDC"]
@@ -35,7 +35,7 @@ ROM0 bank #0:
 	         $08c0 = TilesEnd
 	         $0a46 = TennisEnd
 	EMPTY: $0a46-$3fff ($35ba bytes)
-	TOTAL EMPTY: $3619 bytes
+	TOTAL EMPTY: $3618 bytes
 
 WRAM0 bank #0:
 	SECTION: $c000-$c05f ($0060 bytes) ["WRAM"]

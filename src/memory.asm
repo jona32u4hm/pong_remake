@@ -51,7 +51,8 @@ mapLoad::
 	ld e,a
 	ld a, d
 	inc a
-	sbc 1
+	ccf
+	sbc 0
 	ld d, a
 
 

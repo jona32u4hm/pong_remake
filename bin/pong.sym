@@ -5,8 +5,8 @@
 00:000e mapLoad
 00:000e mapLoad.y
 00:000f mapLoad.x
-00:0029 DMACode
-00:0035 DMACodeEnd
+00:002a DMACode
+00:0036 DMACodeEnd
 00:0061 Setup
 00:0093 Setup.waitVBlank
 00:0150 Tiles
