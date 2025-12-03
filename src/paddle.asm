@@ -1,11 +1,43 @@
 SECTION "Paddle Control", ROM0
 
+DEF MAX_PADDLE_VEL EQU %0010_1000
+DEF PADDLE_ACCEL     EQU %0000_0100
+
 ;movePaddle::
 ; hl: pointer to P# address in RAM
 ; a:   xxxx0000 if one x is 1 -> move up
 ;      0000xxxx if one x is 1 -> move down 
 movePaddle:
+.moveUp
+    push af ; a value used again in .moveDown
+    and %11110000
+    ; if result is zero were not going up, skip to moveDown
+    jr z,.moveDown 
+    ; --------- accelerate up ----------
+    ld a, [hl] 
+    cp ~MAX_PADDLE_VEL ;max negative (upwards) velocity
+    ; c set if a <= max      (2's complement has been considered)
+    jr c,.moveDown ;no need to accelerate if velocity reached its max
 
+    sub a, PADDLE_ACCEL ;accelerate upwards
+    ld [hl], a ;save value
+
+.moveDown
+    pop af
+    and %00001111
+    ; if result is zero were not going down, return
+    jr z,.break
+    ; --------- accelerate down ----------
+    ld a, [hl] 
+    cp MAX_PADDLE_VEL ;max negative (upwards) velocity
+    ; c not set if a >= max
+    jr nc, .break ;no need to accelerate if velocity reached its max
+
+    add a, PADDLE_ACCEL ;accelerate upwards
+    ld [hl], a save value
+
+.break
+    
     ret 
 
 ;updatePaddles::

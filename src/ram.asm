@@ -17,7 +17,9 @@ JoyPad:: ds 1
 
 Control_Variables::
 
+;Paddle 1 physics
+; uses fixed point between nibbles 
 P1::
-.a      ds 1
 .v      ds 1
+.a      ds 1
 .state  ds 1
