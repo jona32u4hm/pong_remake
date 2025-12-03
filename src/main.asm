@@ -58,6 +58,15 @@ Setup::
 	or	LCDC_ON
 	ld	[rLCDC], a	
 
-
+	;set OAM shadow RAM to 0 (hides all objects)
+	ld a, 0 
+	ld de, OAM_Other
+	ld bc, OAM_Source_END - OAM_Other
+	call memSet
+	;intialize paddle and ball objects
+	ld	hl, PaddleObj	
+	ld	de, OAM_Source ;vram tile mem
+	ld	bc, PaddleObjEND - PaddleObj
+	call	memLoad
 	
 	jr @

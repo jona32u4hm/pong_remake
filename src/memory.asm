@@ -18,6 +18,25 @@ memLoad::
 	jr	nz,.loop
 	ret
 	
+; memSet: sets memory in Destiny to a value
+;   a: value
+;   de: Destiny.
+;   bc: number of bytes.
+memSet::
+	inc	b
+	inc	c
+	jr	.skip
+.loop	
+	ld	[de],a
+	inc	de
+.skip	dec	c
+	jr	nz,.loop
+	dec	b
+	jr	nz,.loop
+	ret
+
+
+
 ; mapLoad: "copies" a map from Source to Destiny.
 ; ONLY USED WHEN SCREEN IS OFF
 ;   hl: Source.
@@ -35,10 +54,8 @@ mapLoad::
 		inc de
 
 
-		;check if we're done on x dimension loop
-		ld a, b
-		dec b
-		dec a
+		
+		dec b;check if we're done on x dimension loop
 		jr nz, .x
 
 	pop bc;get b value back
@@ -58,8 +75,6 @@ mapLoad::
 
 
 	;check if we're done on y dimension
-	ld a, c
 	dec c
-	dec a
 	jr nz, .y
 ret

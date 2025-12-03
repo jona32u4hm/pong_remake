@@ -1,20 +1,23 @@
 SUMMARY:
-	ROM0: 2536 bytes used / 13848 free
-	WRAM0: 96 bytes used / 4000 free
+	ROM0: 2604 bytes used / 13780 free
+	WRAM0: 187 bytes used / 3909 free
 	HRAM: 12 bytes used / 115 free
 
 ROM0 bank #0:
-	SECTION: $0000-$0029 ($002a bytes) ["Memory Routines"]
+	SECTION: $0000-$0032 ($0033 bytes) ["Memory Routines"]
 	         $0000 = memLoad
 	         $0004 = memLoad.loop
 	         $0007 = memLoad.skip
-	         $000e = mapLoad
-	         $000e = mapLoad.y
-	         $000f = mapLoad.x
-	SECTION: $002a-$0035 ($000c bytes) ["VBlank Routine"]
-	         $002a = DMACode
-	         $0036 = DMACodeEnd
-	EMPTY: $0036-$003f ($000a bytes)
+	         $000e = memSet
+	         $0012 = memSet.loop
+	         $0014 = memSet.skip
+	         $001b = mapLoad
+	         $001b = mapLoad.y
+	         $001c = mapLoad.x
+	SECTION: $0033-$003e ($000c bytes) ["VBlank Routine"]
+	         $0033 = DMACode
+	         $003f = DMACodeEnd
+	EMPTY: $003f-$003f ($0001 byte)
 	SECTION: $0040-$0042 ($0003 bytes) ["Vblank"]
 	EMPTY: $0043-$0047 ($0005 bytes)
 	SECTION: $0048-$0048 ($0001 byte) ["LCDC"]
@@ -24,24 +27,31 @@ ROM0 bank #0:
 	SECTION: $0058-$0058 ($0001 byte) ["Serial"]
 	EMPTY: $0059-$005f ($0007 bytes)
 	SECTION: $0060-$0060 ($0001 byte) ["Joypad"]
-	SECTION: $0061-$00c5 ($0065 bytes) ["Main"]
+	SECTION: $0061-$00dc ($007c bytes) ["Main"]
 	         $0061 = Setup
 	         $0093 = Setup.waitVBlank
-	EMPTY: $00c6-$00ff ($003a bytes)
+	EMPTY: $00dd-$00ff ($0023 bytes)
 	SECTION: $0100-$014f ($0050 bytes) ["Header"]
-	SECTION: $0150-$0a45 ($08f6 bytes) ["Tiles"]
+	SECTION: $0150-$0a69 ($091a bytes) ["Tiles"]
 	         $0150 = Tiles
 	         $08c0 = Tennis
 	         $08c0 = TilesEnd
 	         $0a46 = TennisEnd
-	EMPTY: $0a46-$3fff ($35ba bytes)
-	TOTAL EMPTY: $3618 bytes
+	         $0a46 = PaddleObj
+	         $0a6a = PaddleObjEND
+	EMPTY: $0a6a-$3fff ($3596 bytes)
+	TOTAL EMPTY: $35d4 bytes
 
 WRAM0 bank #0:
-	SECTION: $c000-$c05f ($0060 bytes) ["WRAM"]
+	SECTION: $c000-$c0ba ($00bb bytes) ["WRAM"]
 	         $c000 = OAM_Source
-	EMPTY: $c060-$cfff ($0fa0 bytes)
-	TOTAL EMPTY: $0fa0 bytes
+	         $c000 = P1
+	         $c010 = P2
+	         $c020 = Ball
+	         $c024 = OAM_Other
+	         $c0bb = OAM_Source_END
+	EMPTY: $c0bb-$cfff ($0f45 bytes)
+	TOTAL EMPTY: $0f45 bytes
 
 HRAM bank #0:
 	SECTION: $ff80-$ff8b ($000c bytes) ["DMA routine"]
