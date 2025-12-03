@@ -1,9 +1,9 @@
 
 SECTION "WRAM", WRAM0[$C000]
 OAM_Source::
-P1::
+P1OBJ::
     ds 4*4
-P2::
+P2OBJ::
     ds 4*4
 Ball::
     ds 4
@@ -17,6 +17,7 @@ JoyPad:: ds 1
 
 Control_Variables::
 
-P1a:: ds 1
-P1v:: ds 1
-
+P1::
+.a      ds 1
+.v      ds 1
+.state  ds 1
