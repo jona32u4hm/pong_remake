@@ -54,4 +54,3 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.asm
 clean:
 	@echo "--- CLEANING ---"
 	@rm -rf $(BUILD_DIR) $(BIN_DIR)
-

@@ -10,3 +10,13 @@ Ball::
 OAM_Other::
     ds 160 - 9
 OAM_Source_END::
+
+Hardware_Variables::
+
+JoyPad:: ds 1
+
+Control_Variables::
+
+P1a:: ds 1
+P1v:: ds 1
+

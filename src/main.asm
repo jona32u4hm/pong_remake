@@ -2,10 +2,11 @@ INCLUDE "include/hardware.inc"
 
 SECTION "Main", ROM0
 
+
 Setup::
+
 	di	; disable interrupts
-	ld	SP, $FFFF
-	
+	ld	SP, $FFFF  
 	;-------- DMA Setup --------
 	ld	de, VBlankISR
 	ld	hl, DMACode

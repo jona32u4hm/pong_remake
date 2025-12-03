@@ -18,11 +18,17 @@
 00:0a46 PaddleObj
 00:0a46 TennisEnd
 00:0a6a PaddleObjEND
+00:0a6a readJoyPad
 00:c000 OAM_Source
 00:c000 P1
 00:c010 P2
 00:c020 Ball
 00:c024 OAM_Other
+00:c0bb Hardware_Variables
+00:c0bb JoyPad
 00:c0bb OAM_Source_END
+00:c0bc Control_Variables
+00:c0bc P1a
+00:c0bd P1v
 00:ff80 VBlankISR
 00:ff87 VBlankISR.wait
