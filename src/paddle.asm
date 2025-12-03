@@ -1,15 +1,15 @@
 SECTION "Paddle Control", ROM0
 
 DEF MAX_PADDLE_VEL EQU %0010_1000
-DEF PADDLE_ACCEL     EQU %0000_0100
+DEF PADDLE_ACCEL     EQU %0000_0010
 
 ;movePaddle::
-; hl: pointer to P# address in RAM
+; hl: pointer to Paddle velocity address in RAM
 ; a:   xxxx0000 if one x is 1 -> move up
 ;      0000xxxx if one x is 1 -> move down 
 movePaddle:
+    ld b, a
 .moveUp
-    push af ; a value used again in .moveDown
     and %11110000
     ; if result is zero were not going up, skip to moveDown
     jr z,.moveDown 
@@ -23,7 +23,7 @@ movePaddle:
     ld [hl], a ;save value
 
 .moveDown
-    pop af
+    ld a, b
     and %00001111
     ; if result is zero were not going down, return
     jr z,.break
@@ -34,11 +34,38 @@ movePaddle:
     jr nc, .break ;no need to accelerate if velocity reached its max
 
     add a, PADDLE_ACCEL ;accelerate upwards
-    ld [hl], a save value
+    ld [hl], a ;save value
 
 .break
-    
-    ret 
+    ld a, b
+    cp 0
+    ret nz ;return if input
+    ;otherwise, since there's no input we must apply friction
+    ld a, [hl]
+    cp 0 
+    ret z ;if zero, there's no movement nor need to apply friction
+    jr nc, .negativeFriction ;if a > 0, friction is negative
+
+; ------- positive friction --------
+.positiveFriction
+    add a, PADDLE_ACCEL
+    jr nc, .loadNewVelocity ;return if still missing friction
+    ld a, 0 ;assign 0 vel if not
+    jr .loadNewVelocity
+
+
+; ------- negative friction --------
+.negativeFriction
+
+    sub a, PADDLE_ACCEL ; c flag set if A < PADDLE_ACCEL 
+    jr nc, .loadNewVelocity ;return if still missing friction
+    ld a, 0 ;assign 0 vel if not
+    jr .loadNewVelocity
+
+
+.loadNewVelocity
+    ld [hl],a ;save new velocity
+    ret
 
 ;updatePaddles::
 ; reads JoyPad variable
@@ -47,7 +74,7 @@ movePaddle:
 updatePaddles::
     ; ---------------- for first Paddle ----------------
     ;prepare function parameters
-    ld hl, P1
+    ld hl, velocityP1
     ld a, [JoyPad]
     and %00001111
     ld b, a
@@ -58,7 +85,7 @@ updatePaddles::
     call movePaddle
     ; ---------------- for second Paddle ----------------
     ;prepare function parameters
-    ld hl, P2
+    ld hl, velocityP2
     ld a, [JoyPad]
     and %11110000
     ld b, a
@@ -67,6 +94,47 @@ updatePaddles::
     ; a now contains buttons in this order: %StrSelAB_StrSelAB
     and %00100001 ;apply a mask for use in movePaddle
     call movePaddle
+
+
+    ; --------------- update positions ----------------
+;paddle 1
+    ld a, [subpixelP1] ;get subpixel part of P1 Y position
+    ld l, a
+    ld a, P1OBJ + YPOS ;get pixel part of P1 Y position
+    ld h, a
+    ld a, velocityPaddle1
+    swap a
+    ld b, a
+    and $F0 ;higher nibble is subpixel velocity
+    ld e, a
+    ld a, b
+    and $0F ;lower nibble is pixel unit velocity
+    ld d, a
+    add hl, de
+    ;save values:
+    ld a, l
+    ld [subpixelP1], a ;save subpixel part of P1 Y position
+    ld a, h
+    ld P1OBJ + YPOS, a ;save pixel part of P1 Y position
+;paddle 2
+    ld a, [subpixelP2] ;get subpixel part of P1 Y position
+    ld l, a
+    ld a, P2OBJ + YPOS ;get pixel part of P1 Y position
+    ld h, a
+    ld a, velocityPaddle2
+    swap a
+    ld b, a
+    and $F0 ;higher nibble is subpixel velocity
+    ld e, a
+    ld a, b
+    and $0F ;lower nibble is pixel unit velocity
+    ld d, a
+    add hl, de
+    ;save values:
+    ld a, l
+    ld [subpixelP2], a ;save subpixel part of P1 Y position
+    ld a, h
+    ld P1OBJ + YPOS, a ;save pixel part of P1 Y position
 
     ret 
 
