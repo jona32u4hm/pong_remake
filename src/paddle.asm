@@ -1,7 +1,11 @@
 SECTION "Paddle Control", ROM0
 
-DEF MAX_PADDLE_VEL EQU %0010_1000
-DEF PADDLE_ACCEL     EQU %0000_0010
+DEF MAX_PADDLE_VEL EQU %00_10_1000 ; DO NOT USE FIRST 2 BYTES as those are used to detect negative numbers
+DEF PADDLE_ACCEL   EQU %00_00_0010
+DEF PADDLE_ZERO_OFFSET    EQU 128  ; offset for negative numbers in movePaddle,
+                            ; which negative numpers more confortable to
+                            ; work with when using c flag...
+export PADDLE_ZERO_OFFSET 
 
 ;movePaddle::
 ; hl: pointer to Paddle velocity address in RAM
@@ -11,26 +15,24 @@ movePaddle:
     ld b, a
 .moveUp
     and %11110000
-    ; if result is zero were not going up, skip to moveDown
+    ; if AND result is zero were not going up, skip to moveDown
     jr z,.moveDown 
     ; --------- accelerate up ----------
     ld a, [hl] 
-    dec a
-    cp ~MAX_PADDLE_VEL ;max negative (upwards) velocity
-    ; c set if a <= -max      (2's complement has been considered)
+    cp PADDLE_ZERO_OFFSET - MAX_PADDLE_VEL ;max negative (upwards) velocity
+    ; c set if a < -max      
     jr c,.moveDown ;no need to accelerate if velocity reached its max
-
     sub a, PADDLE_ACCEL ;accelerate upwards
     ld [hl], a ;save value
 
 .moveDown
     ld a, b
     and %00001111
-    ; if result is zero were not going down, return
+    ; if AND result is zero were not going down, skip to break (friction part)
     jr z,.break
     ; --------- accelerate down ----------
     ld a, [hl] 
-    cp MAX_PADDLE_VEL ;max negative (upwards) velocity
+    cp PADDLE_ZERO_OFFSET + MAX_PADDLE_VEL ;max positive (downwards) velocity
     ; c not set if a >= max
     jr nc, .break ;no need to accelerate if velocity reached its max
 
@@ -38,38 +40,28 @@ movePaddle:
     ld [hl], a ;save value
 
 .break
-    ld a, b
-    cp 0
+    ld a, b; retrieve input state
+    cp 0 ;no input?
     ret nz ;return if input
     ;otherwise, since there's no input we must apply friction
     ld a, [hl]
-    cp 0 
+    cp PADDLE_ZERO_OFFSET 
     ret z ;if zero, there's no movement nor need to apply friction
-    ld b, a; save value
-    and %1000_0000 ;if this is not zero then we got ourselves a negative number
-    jr z, .negativeFriction ;if a > 0, friction is negative
+
+    jr nc, .negativeFriction ;if a > 0, friction is negative
 
 ; ------- positive friction --------
 .positiveFriction
-    ld a, b;retrieve value
-    add a, PADDLE_ACCEL
-    jr nc, .loadNewVelocity ;return if still missing friction
-    ld a, 0 ;assign 0 vel if not
-    jr .loadNewVelocity
-
+    inc a
+    ld [hl],a ;save new velocity
+    ret
 
 ; ------- negative friction --------
 .negativeFriction
-    ld a, b;retrieve value
-    sub a, PADDLE_ACCEL ; c flag set if A < PADDLE_ACCEL 
-    jr nc, .loadNewVelocity ;return if still missing friction
-    ld a, 0 ;assign 0 vel if not
-    jr .loadNewVelocity
-
-
-.loadNewVelocity
+    dec a
     ld [hl],a ;save new velocity
     ret
+
 
 ;updatePaddles::
 ; reads JoyPad variable
@@ -108,13 +100,33 @@ updatePaddles::
     ld a, [P1OBJ + YPOS] ;get pixel part of P1 Y position
     ld h, a
     ld a, [velocityP1]
-    swap a
+    sub PADDLE_ZERO_OFFSET ;remove ofset
+
+    push af
+    ; calculate complement mask to store in b
+    and %11000000
     ld b, a
-    and $F0 ;higher nibble is subpixel velocity
-    ld e, a
-    ld a, b
+    rr b
+    rr b
+    or b
+    ld b, a
+    ; done, B will hold F0 if velocity is negative else 00
+    pop af
+
+    swap a
+    push af
     and $0F ;lower nibble is pixel unit velocity
-    ld d, a
+    or b ;apply complement mask
+    ld d, a ;store in higher byte
+
+    swap b
+    pop af
+    and $F0 ;higher nibble is subpixel velocity
+    or b ;apply complement mask
+    ld e, a ;store in lower byte
+
+
+    ;add velocity 
     add hl, de
     ;save values:
     ld a, l
@@ -127,19 +139,39 @@ updatePaddles::
     ld a, [P2OBJ + YPOS] ;get pixel part of P1 Y position
     ld h, a
     ld a, [velocityP2]
-    swap a
+    sub PADDLE_ZERO_OFFSET ;remove offset
+
+    push af
+    ; calculate complement mask to store in b
+    and %11000000
     ld b, a
-    and $F0 ;higher nibble is subpixel velocity
-    ld e, a
-    ld a, b
+    rr b
+    rr b
+    or b
+    ld b, a
+    ; done, B will hold F0 if velocity is negative else 00
+    pop af
+
+    swap a
+    push af
     and $0F ;lower nibble is pixel unit velocity
-    ld d, a
+    or b ;apply complement mask
+    ld d, a ;store in higher byte
+
+    swap b
+    pop af
+    and $F0 ;higher nibble is subpixel velocity
+    or b ;apply complement mask
+    ld e, a ;store in lower byte
+
+
+    ;add velocity 
     add hl, de
     ;save values:
     ld a, l
     ld [subpixelP2], a ;save subpixel part of P1 Y position
     ld a, h
-    ld [P1OBJ + YPOS], a ;save pixel part of P1 Y position
+    ld [P2OBJ + YPOS], a ;save pixel part of P1 Y position
 
     ret 
 

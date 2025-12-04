@@ -62,14 +62,17 @@ Setup::
 	;set OAM shadow RAM to 0 (hides all objects)
 	ld a, 0 
 	ld de, OAM_Other
-	ld bc, OAM_Source_END - OAM_Other
+	ld bc, setUp2Here - OAM_Other
 	call memSet
 	;intialize paddle and ball objects
 	ld	hl, PaddleObj	
 	ld	de, OAM_Source ;vram tile mem
 	ld	bc, PaddleObjEND - PaddleObj
 	call	memLoad
-	
+	;setup paddle velocity to offsetted zero used for negative numbers
+	ld a, PADDLE_ZERO_OFFSET
+	ld [velocityP1], a
+	ld [velocityP2], a
 
 
 

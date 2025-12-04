@@ -1,5 +1,5 @@
 SUMMARY:
-	ROM0: 2812 bytes used / 13572 free
+	ROM0: 2836 bytes used / 13548 free
 	WRAM0: 192 bytes used / 3904 free
 	HRAM: 12 bytes used / 115 free
 
@@ -27,16 +27,11 @@ ROM0 bank #0:
 	SECTION: $0058-$0058 ($0001 byte) ["Serial"]
 	EMPTY: $0059-$005f ($0007 bytes)
 	SECTION: $0060-$0060 ($0001 byte) ["Joypad"]
-	SECTION: $0061-$00fb ($009b bytes) ["Paddle Control"]
-	         $0061 = movePaddle
-	         $0062 = movePaddle.moveUp
-	         $006f = movePaddle.moveDown
-	         $007c = movePaddle.break
-	         $0089 = movePaddle.positiveFriction
-	         $0092 = movePaddle.negativeFriction
-	         $009b = movePaddle.loadNewVelocity
-	         $009d = updatePaddles
-	EMPTY: $00fc-$00ff ($0004 bytes)
+	SECTION: $0061-$00ec ($008c bytes) ["Main"]
+	         $0061 = Setup
+	         $0093 = Setup.waitVBlank
+	         $00e3 = Main
+	EMPTY: $00ed-$00ff ($0013 bytes)
 	SECTION: $0100-$014f ($0050 bytes) ["Header"]
 	SECTION: $0150-$0a69 ($091a bytes) ["Tiles"]
 	         $0150 = Tiles
@@ -45,14 +40,18 @@ ROM0 bank #0:
 	         $0a46 = TennisEnd
 	         $0a46 = PaddleObj
 	         $0a6a = PaddleObjEND
-	SECTION: $0a6a-$0aed ($0084 bytes) ["Main"]
-	         $0a6a = Setup
-	         $0a9c = Setup.waitVBlank
-	         $0ae4 = Main
-	SECTION: $0aee-$0b1a ($002d bytes) ["Input"]
-	         $0aee = readJoyPad
-	EMPTY: $0b1b-$3fff ($34e5 bytes)
-	TOTAL EMPTY: $3504 bytes
+	SECTION: $0a6a-$0b14 ($00ab bytes) ["Paddle Control"]
+	         $0a6a = movePaddle
+	         $0a6b = movePaddle.moveUp
+	         $0a77 = movePaddle.moveDown
+	         $0a84 = movePaddle.break
+	         $0a8e = movePaddle.positiveFriction
+	         $0a91 = movePaddle.negativeFriction
+	         $0a94 = updatePaddles
+	SECTION: $0b15-$0b41 ($002d bytes) ["Input"]
+	         $0b15 = readJoyPad
+	EMPTY: $0b42-$3fff ($34be bytes)
+	TOTAL EMPTY: $34ec bytes
 
 WRAM0 bank #0:
 	SECTION: $c000-$c0bf ($00c0 bytes) ["WRAM"]
@@ -69,6 +68,7 @@ WRAM0 bank #0:
 	         $c0bd = velocityP2
 	         $c0be = subpixelP1
 	         $c0bf = subpixelP2
+	         $c0c0 = setUp2Here
 	EMPTY: $c0c0-$cfff ($0f40 bytes)
 	TOTAL EMPTY: $0f40 bytes
 
