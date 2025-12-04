@@ -26,7 +26,13 @@
 00:0a8e movePaddle.positiveFriction
 00:0a91 movePaddle.negativeFriction
 00:0a94 updatePaddles
-00:0b33 readJoyPad
+00:0ab6 updateP1Pos
+00:0ad1 updateP1Pos.belowUpperLimit
+00:0ae3 updateP1Pos.belowLowerLimit
+00:0b1a updateP2Pos
+00:0b35 updateP2Pos.belowUpperLimit
+00:0b47 updateP2Pos.belowLowerLimit
+00:0b7f readJoyPad
 00:c000 OAM_Source
 00:c000 P1OBJ
 00:c010 P2OBJ
@@ -47,4 +53,7 @@
 01 XPOS
 02 TILE
 03 FLAGS
+18 COURT_UPPER_LIMIT
+20 PADDLE_WIDTH
 80 PADDLE_ZERO_OFFSET
+a0 COURT_LOWER_LIMIT

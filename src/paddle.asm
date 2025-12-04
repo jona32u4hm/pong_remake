@@ -5,7 +5,16 @@ DEF PADDLE_ACCEL   EQU %00_00_0010
 DEF PADDLE_ZERO_OFFSET    EQU 128  ; offset for negative numbers in movePaddle,
                             ; which negative numpers more confortable to
                             ; work with when using c flag...
+DEF PADDLE_WIDTH EQU 4*8
+; court limits: remember add 2 tiles first (sprite offset) 
+;                   then multiply by tile height (8)
+DEF COURT_UPPER_LIMIT EQU (2+1)*8
+DEF COURT_LOWER_LIMIT EQU (2+18)*8
+
 export PADDLE_ZERO_OFFSET 
+export PADDLE_WIDTH
+export COURT_UPPER_LIMIT 
+export COURT_LOWER_LIMIT
 
 ;movePaddle::
 ; hl: pointer to Paddle velocity address in RAM
@@ -94,10 +103,37 @@ updatePaddles::
 
 
     ; --------------- update positions ----------------
-;paddle 1
+updateP1Pos:
     ld a, [subpixelP1] ;get subpixel part of P1 Y position
     ld l, a
     ld a, [P1OBJ + YPOS] ;get pixel part of P1 Y position
+    cp COURT_UPPER_LIMIT
+    jr nc,.belowUpperLimit
+        ;if we got here we crossed upper limit
+
+        ;first check if velocity is going the wrong way
+        ld a, [velocityP1]
+        cp PADDLE_ZERO_OFFSET
+        jr nc, .belowLowerLimit ;skip if going the other way
+
+        ld a, PADDLE_ZERO_OFFSET 
+        ld [velocityP1], a ; set velocity to zero
+        ld a, COURT_UPPER_LIMIT
+        jr .belowLowerLimit
+.belowUpperLimit
+    cp COURT_LOWER_LIMIT - PADDLE_WIDTH
+    jr c,.belowLowerLimit
+        ;if we got here we crossed lower limit
+
+        ;first check if velocity is going the wrong way
+        ld a, [velocityP1]
+        cp PADDLE_ZERO_OFFSET
+        jr c, .belowLowerLimit  ;skip if going the other way
+
+        ld a, PADDLE_ZERO_OFFSET 
+        ld [velocityP1], a ; set velocity to zero
+        ld a, COURT_LOWER_LIMIT - PADDLE_WIDTH
+.belowLowerLimit
     ld h, a
     ld a, [velocityP1]
     sub PADDLE_ZERO_OFFSET ;remove ofset
@@ -140,10 +176,37 @@ updatePaddles::
     add 8
     ld [P1OBJ + YPOS + 12], a ;save remaining OBJ positions for metasprite
 
-;paddle 2
+updateP2Pos:
     ld a, [subpixelP2] ;get subpixel part of P1 Y position
     ld l, a
     ld a, [P2OBJ + YPOS] ;get pixel part of P1 Y position
+    cp COURT_UPPER_LIMIT
+    jr nc,.belowUpperLimit
+        ;if we got here we crossed upper limit
+
+        ;first check if velocity is going the wrong way
+        ld a, [velocityP2]
+        cp PADDLE_ZERO_OFFSET
+        jr nc, .belowLowerLimit  ; skip if going the other way
+
+        ld a, PADDLE_ZERO_OFFSET
+        ld [velocityP2], a ; set velocity to zero
+        ld a, COURT_UPPER_LIMIT
+        jr .belowLowerLimit
+.belowUpperLimit
+    cp COURT_LOWER_LIMIT - PADDLE_WIDTH
+    jr c,.belowLowerLimit
+        ;if we got here we crossed lower limit
+
+        ;first check if velocity is going the wrong way
+        ld a, [velocityP2]
+        cp PADDLE_ZERO_OFFSET
+        jr c, .belowLowerLimit ; skip if going the other way
+
+        ld a, PADDLE_ZERO_OFFSET
+        ld [velocityP2], a ; set velocity to zero
+        ld a, COURT_LOWER_LIMIT - PADDLE_WIDTH
+.belowLowerLimit
     ld h, a
     ld a, [velocityP2]
     sub PADDLE_ZERO_OFFSET ;remove offset
@@ -187,4 +250,5 @@ updatePaddles::
     ld [P2OBJ + YPOS + 12], a ;save remaining OBJ positions for metasprite
 
     ret 
+
 
