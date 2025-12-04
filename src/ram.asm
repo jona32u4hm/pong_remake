@@ -3,6 +3,11 @@ DEF XPOS  EQU 1
 DEF TILE  EQU 2
 DEF FLAGS EQU 3
 
+export YPOS 
+export XPOS 
+export TILE 
+export FLAGS 
+
 SECTION "WRAM", WRAM0[$C000]
 OAM_Source::
 P1OBJ::
@@ -23,8 +28,8 @@ Control_Variables::
 
 ;Paddle 1 physics
 ; uses fixed point between nibbles 
-velocityPaddle1:: ds 1
-velocityPaddle2:: ds 1
+velocityP1:: ds 1
+velocityP2:: ds 1
 subpixelP1:: ds 1
 subpixelP2:: ds 1
 

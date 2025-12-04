@@ -8,6 +8,7 @@ SECTION "Input", ROM0
 ;   stores JoyPad state in JoyPad WRAM variable
 ;   a also holds ths value on exit
 ;   output consists of one byte, were 0 represents pressed and 1 represents nnnnn
+; %DULR_StrSelBA
 readJoyPad::
     ld a,  JOYP_GET_CTRL_PAD
     ld [rJOYP], a

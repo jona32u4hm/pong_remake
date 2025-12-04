@@ -1,6 +1,6 @@
 SUMMARY:
-	ROM0: 2650 bytes used / 13734 free
-	WRAM0: 190 bytes used / 3906 free
+	ROM0: 2812 bytes used / 13572 free
+	WRAM0: 192 bytes used / 3904 free
 	HRAM: 12 bytes used / 115 free
 
 ROM0 bank #0:
@@ -17,7 +17,7 @@ ROM0 bank #0:
 	SECTION: $0033-$003e ($000c bytes) ["VBlank Routine"]
 	         $0033 = DMACode
 	         $003f = DMACodeEnd
-	SECTION: $003f-$003f ($0001 byte) ["Paddle Control"]
+	EMPTY: $003f-$003f ($0001 byte)
 	SECTION: $0040-$0042 ($0003 bytes) ["Vblank"]
 	EMPTY: $0043-$0047 ($0005 bytes)
 	SECTION: $0048-$0048 ($0001 byte) ["LCDC"]
@@ -27,10 +27,16 @@ ROM0 bank #0:
 	SECTION: $0058-$0058 ($0001 byte) ["Serial"]
 	EMPTY: $0059-$005f ($0007 bytes)
 	SECTION: $0060-$0060 ($0001 byte) ["Joypad"]
-	SECTION: $0061-$00dc ($007c bytes) ["Main"]
-	         $0061 = Setup
-	         $0093 = Setup.waitVBlank
-	EMPTY: $00dd-$00ff ($0023 bytes)
+	SECTION: $0061-$00fb ($009b bytes) ["Paddle Control"]
+	         $0061 = movePaddle
+	         $0062 = movePaddle.moveUp
+	         $006f = movePaddle.moveDown
+	         $007c = movePaddle.break
+	         $0089 = movePaddle.positiveFriction
+	         $0092 = movePaddle.negativeFriction
+	         $009b = movePaddle.loadNewVelocity
+	         $009d = updatePaddles
+	EMPTY: $00fc-$00ff ($0004 bytes)
 	SECTION: $0100-$014f ($0050 bytes) ["Header"]
 	SECTION: $0150-$0a69 ($091a bytes) ["Tiles"]
 	         $0150 = Tiles
@@ -39,26 +45,32 @@ ROM0 bank #0:
 	         $0a46 = TennisEnd
 	         $0a46 = PaddleObj
 	         $0a6a = PaddleObjEND
-	SECTION: $0a6a-$0a96 ($002d bytes) ["Input"]
-	         $0a6a = readJoyPad
-	EMPTY: $0a97-$3fff ($3569 bytes)
-	TOTAL EMPTY: $35a6 bytes
+	SECTION: $0a6a-$0aed ($0084 bytes) ["Main"]
+	         $0a6a = Setup
+	         $0a9c = Setup.waitVBlank
+	         $0ae4 = Main
+	SECTION: $0aee-$0b1a ($002d bytes) ["Input"]
+	         $0aee = readJoyPad
+	EMPTY: $0b1b-$3fff ($34e5 bytes)
+	TOTAL EMPTY: $3504 bytes
 
 WRAM0 bank #0:
-	SECTION: $c000-$c0bd ($00be bytes) ["WRAM"]
-	         $c000 = P1
+	SECTION: $c000-$c0bf ($00c0 bytes) ["WRAM"]
 	         $c000 = OAM_Source
-	         $c010 = P2
+	         $c000 = P1OBJ
+	         $c010 = P2OBJ
 	         $c020 = Ball
 	         $c024 = OAM_Other
+	         $c0bb = JoyPad
 	         $c0bb = OAM_Source_END
 	         $c0bb = Hardware_Variables
-	         $c0bb = JoyPad
-	         $c0bc = P1a
+	         $c0bc = velocityP1
 	         $c0bc = Control_Variables
-	         $c0bd = P1v
-	EMPTY: $c0be-$cfff ($0f42 bytes)
-	TOTAL EMPTY: $0f42 bytes
+	         $c0bd = velocityP2
+	         $c0be = subpixelP1
+	         $c0bf = subpixelP2
+	EMPTY: $c0c0-$cfff ($0f40 bytes)
+	TOTAL EMPTY: $0f40 bytes
 
 HRAM bank #0:
 	SECTION: $ff80-$ff8b ($000c bytes) ["DMA routine"]

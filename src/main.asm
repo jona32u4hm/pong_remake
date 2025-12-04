@@ -70,4 +70,14 @@ Setup::
 	ld	bc, PaddleObjEND - PaddleObj
 	call	memLoad
 	
-	jr @
+
+
+
+Main::
+	halt 
+	nop 
+
+	call readJoyPad
+	call updatePaddles
+
+	jr Main
