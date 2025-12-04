@@ -133,6 +133,13 @@ updatePaddles::
     ld [subpixelP1], a ;save subpixel part of P1 Y position
     ld a, h
     ld [P1OBJ + YPOS], a ;save pixel part of P1 Y position
+    add 8
+    ld [P1OBJ + YPOS + 4], a ;save remaining OBJ positions for metasprite
+    add 8
+    ld [P1OBJ + YPOS + 8], a ;save remaining OBJ positions for metasprite
+    add 8
+    ld [P1OBJ + YPOS + 12], a ;save remaining OBJ positions for metasprite
+
 ;paddle 2
     ld a, [subpixelP2] ;get subpixel part of P1 Y position
     ld l, a
@@ -172,6 +179,12 @@ updatePaddles::
     ld [subpixelP2], a ;save subpixel part of P1 Y position
     ld a, h
     ld [P2OBJ + YPOS], a ;save pixel part of P1 Y position
+    add 8
+    ld [P2OBJ + YPOS + 4], a ;save remaining OBJ positions for metasprite
+    add 8
+    ld [P2OBJ + YPOS + 8], a ;save remaining OBJ positions for metasprite
+    add 8
+    ld [P2OBJ + YPOS + 12], a ;save remaining OBJ positions for metasprite
 
     ret 
 

@@ -1,5 +1,5 @@
 SUMMARY:
-	ROM0: 2836 bytes used / 13548 free
+	ROM0: 2866 bytes used / 13518 free
 	WRAM0: 192 bytes used / 3904 free
 	HRAM: 12 bytes used / 115 free
 
@@ -40,7 +40,7 @@ ROM0 bank #0:
 	         $0a46 = TennisEnd
 	         $0a46 = PaddleObj
 	         $0a6a = PaddleObjEND
-	SECTION: $0a6a-$0b14 ($00ab bytes) ["Paddle Control"]
+	SECTION: $0a6a-$0b32 ($00c9 bytes) ["Paddle Control"]
 	         $0a6a = movePaddle
 	         $0a6b = movePaddle.moveUp
 	         $0a77 = movePaddle.moveDown
@@ -48,10 +48,10 @@ ROM0 bank #0:
 	         $0a8e = movePaddle.positiveFriction
 	         $0a91 = movePaddle.negativeFriction
 	         $0a94 = updatePaddles
-	SECTION: $0b15-$0b41 ($002d bytes) ["Input"]
-	         $0b15 = readJoyPad
-	EMPTY: $0b42-$3fff ($34be bytes)
-	TOTAL EMPTY: $34ec bytes
+	SECTION: $0b33-$0b5f ($002d bytes) ["Input"]
+	         $0b33 = readJoyPad
+	EMPTY: $0b60-$3fff ($34a0 bytes)
+	TOTAL EMPTY: $34ce bytes
 
 WRAM0 bank #0:
 	SECTION: $c000-$c0bf ($00c0 bytes) ["WRAM"]

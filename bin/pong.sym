@@ -26,7 +26,7 @@
 00:0a8e movePaddle.positiveFriction
 00:0a91 movePaddle.negativeFriction
 00:0a94 updatePaddles
-00:0b15 readJoyPad
+00:0b33 readJoyPad
 00:c000 OAM_Source
 00:c000 P1OBJ
 00:c010 P2OBJ
