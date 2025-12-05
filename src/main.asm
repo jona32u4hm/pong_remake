@@ -82,5 +82,6 @@ Main::
 
 	call readJoyPad
 	call updatePaddles
+	call updateBall
 
 	jr Main
