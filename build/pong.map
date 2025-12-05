@@ -1,5 +1,5 @@
 SUMMARY:
-	ROM0: 2942 bytes used / 13442 free
+	ROM0: 2952 bytes used / 13432 free
 	WRAM0: 192 bytes used / 3904 free
 	HRAM: 12 bytes used / 115 free
 
@@ -40,7 +40,7 @@ ROM0 bank #0:
 	         $0a46 = TennisEnd
 	         $0a46 = PaddleObj
 	         $0a6a = PaddleObjEND
-	SECTION: $0a6a-$0b7e ($0115 bytes) ["Paddle Control"]
+	SECTION: $0a6a-$0b88 ($011f bytes) ["Paddle Control"]
 	         $0a6a = movePaddle
 	         $0a6b = movePaddle.moveUp
 	         $0a77 = movePaddle.moveDown
@@ -49,15 +49,17 @@ ROM0 bank #0:
 	         $0a91 = movePaddle.negativeFriction
 	         $0a94 = updatePaddles
 	         $0ab6 = updateP1Pos
-	         $0ad1 = updateP1Pos.belowUpperLimit
-	         $0ae3 = updateP1Pos.belowLowerLimit
-	         $0b1a = updateP2Pos
-	         $0b35 = updateP2Pos.belowUpperLimit
-	         $0b47 = updateP2Pos.belowLowerLimit
-	SECTION: $0b7f-$0bab ($002d bytes) ["Input"]
-	         $0b7f = readJoyPad
-	EMPTY: $0bac-$3fff ($3454 bytes)
-	TOTAL EMPTY: $3482 bytes
+	         $0ad1 = updateP1Pos.velocityOK
+	         $0ad6 = updateP1Pos.belowUpperLimit
+	         $0ae8 = updateP1Pos.aboveLowerLimit
+	         $0b1f = updateP2Pos
+	         $0b3a = updateP2Pos.velocityOK
+	         $0b3f = updateP2Pos.belowUpperLimit
+	         $0b51 = updateP2Pos.aboveLowerLimit
+	SECTION: $0b89-$0bb5 ($002d bytes) ["Input"]
+	         $0b89 = readJoyPad
+	EMPTY: $0bb6-$3fff ($344a bytes)
+	TOTAL EMPTY: $3478 bytes
 
 WRAM0 bank #0:
 	SECTION: $c000-$c0bf ($00c0 bytes) ["WRAM"]

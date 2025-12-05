@@ -107,33 +107,36 @@ updateP1Pos:
     ld a, [subpixelP1] ;get subpixel part of P1 Y position
     ld l, a
     ld a, [P1OBJ + YPOS] ;get pixel part of P1 Y position
-    cp COURT_UPPER_LIMIT
+    cp COURT_UPPER_LIMIT + 1 ;one more for carry flag
     jr nc,.belowUpperLimit
         ;if we got here we crossed upper limit
 
         ;first check if velocity is going the wrong way
         ld a, [velocityP1]
         cp PADDLE_ZERO_OFFSET
-        jr nc, .belowLowerLimit ;skip if going the other way
+        jr nc, .velocityOK ;skip if going the other way
 
         ld a, PADDLE_ZERO_OFFSET 
         ld [velocityP1], a ; set velocity to zero
         ld a, COURT_UPPER_LIMIT
-        jr .belowLowerLimit
+        jr .aboveLowerLimit
+    .velocityOK
+        ld a, [P1OBJ + YPOS]   
+        jr .aboveLowerLimit  
 .belowUpperLimit
     cp COURT_LOWER_LIMIT - PADDLE_WIDTH
-    jr c,.belowLowerLimit
+    jr c,.aboveLowerLimit
         ;if we got here we crossed lower limit
 
         ;first check if velocity is going the wrong way
         ld a, [velocityP1]
         cp PADDLE_ZERO_OFFSET
-        jr c, .belowLowerLimit  ;skip if going the other way
+        jr c, .velocityOK  ;skip if going the other way
 
         ld a, PADDLE_ZERO_OFFSET 
         ld [velocityP1], a ; set velocity to zero
         ld a, COURT_LOWER_LIMIT - PADDLE_WIDTH
-.belowLowerLimit
+.aboveLowerLimit
     ld h, a
     ld a, [velocityP1]
     sub PADDLE_ZERO_OFFSET ;remove ofset
@@ -180,33 +183,36 @@ updateP2Pos:
     ld a, [subpixelP2] ;get subpixel part of P1 Y position
     ld l, a
     ld a, [P2OBJ + YPOS] ;get pixel part of P1 Y position
-    cp COURT_UPPER_LIMIT
+    cp COURT_UPPER_LIMIT + 1 ;one more for carry flag
     jr nc,.belowUpperLimit
         ;if we got here we crossed upper limit
 
         ;first check if velocity is going the wrong way
         ld a, [velocityP2]
         cp PADDLE_ZERO_OFFSET
-        jr nc, .belowLowerLimit  ; skip if going the other way
+        jr nc, .velocityOK  ; skip if going the other way
 
         ld a, PADDLE_ZERO_OFFSET
         ld [velocityP2], a ; set velocity to zero
         ld a, COURT_UPPER_LIMIT
-        jr .belowLowerLimit
+        jr .aboveLowerLimit
+    .velocityOK
+        ld a, [P2OBJ + YPOS]   
+        jr .aboveLowerLimit  
 .belowUpperLimit
     cp COURT_LOWER_LIMIT - PADDLE_WIDTH
-    jr c,.belowLowerLimit
+    jr c,.aboveLowerLimit
         ;if we got here we crossed lower limit
 
         ;first check if velocity is going the wrong way
         ld a, [velocityP2]
         cp PADDLE_ZERO_OFFSET
-        jr c, .belowLowerLimit ; skip if going the other way
+        jr c, .velocityOK ; skip if going the other way
 
         ld a, PADDLE_ZERO_OFFSET
         ld [velocityP2], a ; set velocity to zero
         ld a, COURT_LOWER_LIMIT - PADDLE_WIDTH
-.belowLowerLimit
+.aboveLowerLimit
     ld h, a
     ld a, [velocityP2]
     sub PADDLE_ZERO_OFFSET ;remove offset
