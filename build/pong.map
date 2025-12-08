@@ -1,5 +1,5 @@
 SUMMARY:
-	ROM0: 2952 bytes used / 13432 free
+	ROM0: 2956 bytes used / 13428 free
 	WRAM0: 192 bytes used / 3904 free
 	HRAM: 12 bytes used / 115 free
 
@@ -17,7 +17,11 @@ ROM0 bank #0:
 	SECTION: $0033-$003e ($000c bytes) ["VBlank Routine"]
 	         $0033 = DMACode
 	         $003f = DMACodeEnd
-	EMPTY: $003f-$003f ($0001 byte)
+	SECTION: $003f-$003f ($0001 byte) ["Ball implementation"]
+	         $003f = playing
+	         $003f = launching
+	         $003f = scoring
+	         $003f = updateBall
 	SECTION: $0040-$0042 ($0003 bytes) ["Vblank"]
 	EMPTY: $0043-$0047 ($0005 bytes)
 	SECTION: $0048-$0048 ($0001 byte) ["LCDC"]
@@ -27,11 +31,11 @@ ROM0 bank #0:
 	SECTION: $0058-$0058 ($0001 byte) ["Serial"]
 	EMPTY: $0059-$005f ($0007 bytes)
 	SECTION: $0060-$0060 ($0001 byte) ["Joypad"]
-	SECTION: $0061-$00ec ($008c bytes) ["Main"]
+	SECTION: $0061-$00ef ($008f bytes) ["Main"]
 	         $0061 = Setup
 	         $0093 = Setup.waitVBlank
 	         $00e3 = Main
-	EMPTY: $00ed-$00ff ($0013 bytes)
+	EMPTY: $00f0-$00ff ($0010 bytes)
 	SECTION: $0100-$014f ($0050 bytes) ["Header"]
 	SECTION: $0150-$0a69 ($091a bytes) ["Tiles"]
 	         $0150 = Tiles
@@ -59,7 +63,7 @@ ROM0 bank #0:
 	SECTION: $0b89-$0bb5 ($002d bytes) ["Input"]
 	         $0b89 = readJoyPad
 	EMPTY: $0bb6-$3fff ($344a bytes)
-	TOTAL EMPTY: $3478 bytes
+	TOTAL EMPTY: $3474 bytes
 
 WRAM0 bank #0:
 	SECTION: $c000-$c0bf ($00c0 bytes) ["WRAM"]

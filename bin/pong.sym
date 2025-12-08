@@ -10,6 +10,10 @@
 00:001c mapLoad.x
 00:0033 DMACode
 00:003f DMACodeEnd
+00:003f launching
+00:003f playing
+00:003f scoring
+00:003f updateBall
 00:0061 Setup
 00:0093 Setup.waitVBlank
 00:00e3 Main

@@ -9,8 +9,8 @@ export TILE
 export FLAGS 
 
 SECTION "WRAM", WRAM0[$C000]
+P1OBJ:: 
 OAM_Source::
-P1OBJ::
     ds 4*4
 P2OBJ::
     ds 4*4
@@ -20,11 +20,11 @@ OAM_Other::
     ds 160 - 9
 OAM_Source_END::
 
-Hardware_Variables::
+Hardware_Variables:
 
 JoyPad:: ds 1
 
-Control_Variables::
+Control_Variables:
 
 ;Paddle 1 physics
 ; uses fixed point between nibbles 
@@ -33,5 +33,7 @@ velocityP2:: ds 1
 subpixelP1:: ds 1
 subpixelP2:: ds 1
 
+ballState:: ds 2
+ballCounter:: ds 1
 
 setUp2Here::

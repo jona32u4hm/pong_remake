@@ -6,10 +6,11 @@ DEF PADDLE_ZERO_OFFSET    EQU 128  ; offset for negative numbers in movePaddle,
                             ; which negative numpers more confortable to
                             ; work with when using c flag...
 DEF PADDLE_WIDTH EQU 4*8
-; court limits: remember add 2 tiles first (sprite offset) 
-;                   then multiply by tile height (8)
-DEF COURT_UPPER_LIMIT EQU (2+1)*8
-DEF COURT_LOWER_LIMIT EQU (2+18)*8
+
+
+
+DEF COURT_UPPER_LIMIT EQU (OBJ_Y_OFFSET+1)*TILE_SIZE
+DEF COURT_LOWER_LIMIT EQU (OBJ_Y_OFFSET+18)*TILE_SIZE
 
 export PADDLE_ZERO_OFFSET 
 export PADDLE_WIDTH

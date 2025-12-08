@@ -1,5 +1,11 @@
 INCLUDE "include/hardware.inc"
 
+
+def OBJ_Y_OFFSET EQU 2
+def TILE_SIZE EQU 8
+export OBJ_Y_OFFSET
+export TILE_SIZE
+
 SECTION "Main", ROM0
 
 
