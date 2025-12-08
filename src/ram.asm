@@ -35,5 +35,9 @@ subpixelP2:: ds 1
 
 ballState:: ds 2
 ballCounter:: ds 1
+ballYSPEED:: ds 1
+
+scoringPlayer:: ds 1
+
 
 setUp2Here::
