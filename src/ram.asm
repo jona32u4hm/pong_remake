@@ -25,7 +25,7 @@ Hardware_Variables:
 JoyPad:: ds 1
 
 Control_Variables:
-
+ds 1
 ;Paddle 1 physics
 ; uses fixed point between nibbles 
 velocityP1:: ds 1
@@ -36,8 +36,12 @@ subpixelP2:: ds 1
 ballState:: ds 2
 ballCounter:: ds 1
 ballYSPEED:: ds 1
+ballXSPEED:: ds 1
+subpixelBallX::ds 1
+subpixelBallY::ds 1
 
-scoringPlayer:: ds 1
+
+launchingPlayer:: ds 1
 
 
 setUp2Here::

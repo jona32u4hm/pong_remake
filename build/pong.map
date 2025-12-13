@@ -1,6 +1,6 @@
 SUMMARY:
-	ROM0: 2956 bytes used / 13428 free
-	WRAM0: 192 bytes used / 3904 free
+	ROM0: 3196 bytes used / 13188 free
+	WRAM0: 201 bytes used / 3895 free
 	HRAM: 12 bytes used / 115 free
 
 ROM0 bank #0:
@@ -17,11 +17,7 @@ ROM0 bank #0:
 	SECTION: $0033-$003e ($000c bytes) ["VBlank Routine"]
 	         $0033 = DMACode
 	         $003f = DMACodeEnd
-	SECTION: $003f-$003f ($0001 byte) ["Ball implementation"]
-	         $003f = playing
-	         $003f = launching
-	         $003f = scoring
-	         $003f = updateBall
+	EMPTY: $003f-$003f ($0001 byte)
 	SECTION: $0040-$0042 ($0003 bytes) ["Vblank"]
 	EMPTY: $0043-$0047 ($0005 bytes)
 	SECTION: $0048-$0048 ($0001 byte) ["LCDC"]
@@ -31,11 +27,11 @@ ROM0 bank #0:
 	SECTION: $0058-$0058 ($0001 byte) ["Serial"]
 	EMPTY: $0059-$005f ($0007 bytes)
 	SECTION: $0060-$0060 ($0001 byte) ["Joypad"]
-	SECTION: $0061-$00ef ($008f bytes) ["Main"]
+	SECTION: $0061-$00f9 ($0099 bytes) ["Main"]
 	         $0061 = Setup
 	         $0093 = Setup.waitVBlank
-	         $00e3 = Main
-	EMPTY: $00f0-$00ff ($0010 bytes)
+	         $00ed = Main
+	EMPTY: $00fa-$00ff ($0006 bytes)
 	SECTION: $0100-$014f ($0050 bytes) ["Header"]
 	SECTION: $0150-$0a69 ($091a bytes) ["Tiles"]
 	         $0150 = Tiles
@@ -60,13 +56,25 @@ ROM0 bank #0:
 	         $0b3a = updateP2Pos.velocityOK
 	         $0b3f = updateP2Pos.belowUpperLimit
 	         $0b51 = updateP2Pos.aboveLowerLimit
-	SECTION: $0b89-$0bb5 ($002d bytes) ["Input"]
-	         $0b89 = readJoyPad
-	EMPTY: $0bb6-$3fff ($344a bytes)
-	TOTAL EMPTY: $3474 bytes
+	SECTION: $0b89-$0c6f ($00e7 bytes) ["Ball implementation"]
+	         $0b89 = updateBall
+	         $0b92 = launchingSetup
+	         $0b99 = launchingSetup.firstPlayer
+	         $0bc4 = launchingSetup.secondPlayer
+	         $0bef = moving
+	         $0c13 = counting
+	         $0c3d = counting.blinkBall
+	         $0c41 = counting.startLaunch
+	         $0c51 = launching
+	         $0c6f = playing
+	         $0c6f = scoring
+	SECTION: $0c70-$0c9c ($002d bytes) ["Input"]
+	         $0c70 = readJoyPad
+	EMPTY: $0c9d-$3fff ($3363 bytes)
+	TOTAL EMPTY: $3384 bytes
 
 WRAM0 bank #0:
-	SECTION: $c000-$c0bf ($00c0 bytes) ["WRAM"]
+	SECTION: $c000-$c0c8 ($00c9 bytes) ["WRAM"]
 	         $c000 = OAM_Source
 	         $c000 = P1OBJ
 	         $c010 = P2OBJ
@@ -75,14 +83,21 @@ WRAM0 bank #0:
 	         $c0bb = JoyPad
 	         $c0bb = OAM_Source_END
 	         $c0bb = Hardware_Variables
-	         $c0bc = velocityP1
 	         $c0bc = Control_Variables
-	         $c0bd = velocityP2
-	         $c0be = subpixelP1
-	         $c0bf = subpixelP2
-	         $c0c0 = setUp2Here
-	EMPTY: $c0c0-$cfff ($0f40 bytes)
-	TOTAL EMPTY: $0f40 bytes
+	         $c0bd = velocityP1
+	         $c0be = velocityP2
+	         $c0bf = subpixelP1
+	         $c0c0 = subpixelP2
+	         $c0c1 = ballState
+	         $c0c3 = ballCounter
+	         $c0c4 = ballYSPEED
+	         $c0c5 = ballXSPEED
+	         $c0c6 = subpixelBallX
+	         $c0c7 = subpixelBallY
+	         $c0c8 = launchingPlayer
+	         $c0c9 = setUp2Here
+	EMPTY: $c0c9-$cfff ($0f37 bytes)
+	TOTAL EMPTY: $0f37 bytes
 
 HRAM bank #0:
 	SECTION: $ff80-$ff8b ($000c bytes) ["DMA routine"]
