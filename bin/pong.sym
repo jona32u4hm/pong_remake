@@ -43,6 +43,7 @@
 00:0c3d counting.blinkBall
 00:0c41 counting.startLaunch
 00:0c51 launching
+00:0c5e launching.notP2
 00:0c6f playing
 00:0c6f scoring
 00:0c70 readJoyPad

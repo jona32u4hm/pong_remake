@@ -66,6 +66,7 @@ ROM0 bank #0:
 	         $0c3d = counting.blinkBall
 	         $0c41 = counting.startLaunch
 	         $0c51 = launching
+	         $0c5e = launching.notP2
 	         $0c6f = playing
 	         $0c6f = scoring
 	SECTION: $0c70-$0c9c ($002d bytes) ["Input"]

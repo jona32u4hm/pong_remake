@@ -165,7 +165,6 @@ counting::
     ;first make the ball reappear:
     ld a, $28
     ld [Ball + TILE], a
-    ;paddle y is already available from ball y... no need to store it
     ;update state:
     ld a, low(launching)
     ld [ballState], a
@@ -173,18 +172,15 @@ counting::
     ld [ballState + 1], a
     ret
 launching::
+    ld hl, velocityP1
     ld a, [launchingPlayer]
-    ld l, a
-    ld h, high(OAM_Source)
-    ld a, [hl]; Get the Y addr of the launching player
-
-    add PADDLE_WIDTH/2 + OBJ_Y_OFFSET*TILE_DIMENTION - TILE_DIMENTION/2 
-    ld b, a
-    ld a, [Ball + YPOS]
-    sub b
-    ; a now holds the difference of paddle position between frames
-    ; this is the paddle's average speed
-    rl a ; multiply by 2
+    cp low(P1OBJ + 1)
+    jr z,.notP2
+    ;if we got here the launching player is actually p2
+    ld hl, velocityP2
+.notP2
+    ;now hl holds the velocity address
+    ld a, [hl]
     ld [ballYSPEED], a ;load as ball's new speed
 
     ; now update ball state:
