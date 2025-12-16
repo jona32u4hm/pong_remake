@@ -8,14 +8,20 @@ DEF VELOCITY_ZERO_OFFSET    EQU 128  ; offset for signed velocities in movePaddl
 DEF PADDLE_WIDTH EQU 4*8
 
 
-
-DEF COURT_UPPER_LIMIT EQU (2+1)*8
+;         limit      =  (OBJoffset + #_of_tiles)*tile_dimentions
+DEF COURT_UPPER_LIMIT EQU (2+ 1)*8
 DEF COURT_LOWER_LIMIT EQU (2+18)*8
+DEF COURT_LEFT_LIMIT  EQU (1+ 0)*8
+DEF COURT_RIGHT_LIMIT EQU (1+20)*8
+
+
 
 export VELOCITY_ZERO_OFFSET 
 export PADDLE_WIDTH
 export COURT_UPPER_LIMIT 
 export COURT_LOWER_LIMIT
+export COURT_LEFT_LIMIT
+export COURT_RIGHT_LIMIT
 export MAX_PADDLE_VEL
 
 ;movePaddle::

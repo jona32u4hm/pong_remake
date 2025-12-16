@@ -49,7 +49,7 @@ launchingSetup::
     ret z
 
     ;load positive x speed into the ball
-    ld a, BALL_X_SPEED
+    ld a, VELOCITY_ZERO_OFFSET + BALL_X_SPEED
     ld [velocityBallX], a
     ;now load the player's shadow OAM address into the launchingPlayer variable
     ld a, low(P1OBJ)
@@ -76,7 +76,7 @@ ret
     
 
     ;load negative x speed into the ball (2's complement)
-    ld a, - BALL_X_SPEED
+    ld a, VELOCITY_ZERO_OFFSET - BALL_X_SPEED
     ld [velocityBallX], a
     ;now load the player's shadow OAM address into the launchingPlayer variable
     ld a, low(P2OBJ)
@@ -268,16 +268,134 @@ updateBallY:
     ld [Ball + YPOS], a ;save pixel part of P1 Y position
  ;      -------------------------- Ball Horizontal Movement---------------------------
 updateBallX:
+    ; hl should hold the ball's fixed point X position
+    ; while de holds the velocity that will be added
+    ld a, [subpixelBallX]
+    ld l, a
+    ld a, [Ball + XPOS]
+    ld h, a
+    ;first check if any player has scored (ball is off limits)
+    cp COURT_LEFT_LIMIT 
+    jr c,.prepareScoringP2
+    cp COURT_RIGHT_LIMIT - TILE_DIMENTION
+    jr nc,.prepareScoringP1
+
+    ;now check if ball has entered players' area...
+
+    cp COURT_LEFT_LIMIT + TILE_DIMENTION 
+    jr nc, .notP1
+        ; if we got here we crossed P1's territorry
+        
+        ;first check if velocity is going the wrong way
+        ld a, [velocityBallX]
+        cp VELOCITY_ZERO_OFFSET
+        jr nc, .notP2  ;skip if going the other way
+
+        ; now check paddle/ball Y axis collision...
+        ld a, [Ball + YPOS]
+        ld b, a
+        ld a, [P1OBJ + YPOS]
+
+        add a, PADDLE_WIDTH
+        ; a now holds paddle's lower corner Y position 
+        cp b ;c-flag reset if paddle lower corner below ball
+        jr c, .notP2
+        sub PADDLE_WIDTH - TILE_DIMENTION
+        ; a now holds paddle's upper corner Y position - ball width
+        cp b ;c-flag set if paddle upper corner above ball lower corner
+        jr nc, .notP2
+
+            ;if we got a collision:
+            ;now bounce ball...
+            ld a,  VELOCITY_ZERO_OFFSET + BALL_X_SPEED
+            ld [velocityBallX], a
+            ; ...and assign paddle's velocity to ball Y velocity
+            ld a, [velocityP1]
+            ld [velocityBallY], a 
+
+    .notP1
+    cp COURT_RIGHT_LIMIT - 2*TILE_DIMENTION
+    jr c, .notP2
+        ; if we got here we crossed P2's territorry
+        
+        ;first check if velocity is going the wrong way
+        ld a, [velocityBallX]
+        cp VELOCITY_ZERO_OFFSET
+        jr c, .notP2  ;skip if going the other way
+
+        ; now check paddle/ball Y axis collision...
+        ld a, [Ball + YPOS]
+        ld b, a
+        ld a, [P2OBJ + YPOS]
+
+        add a, PADDLE_WIDTH
+        ; a now holds paddle's lower corner Y position 
+        cp b ;c-flag reset if paddle lower corner below ball
+        jr c, .notP2
+        sub PADDLE_WIDTH - TILE_DIMENTION
+        ; a now holds paddle's upper corner Y position - ball width
+        cp b ;c-flag set if paddle upper corner above ball lower corner
+        jr nc, .notP2
+
+            ;if we got a collision:
+            ;now bounce ball...
+            ld a, VELOCITY_ZERO_OFFSET - BALL_X_SPEED
+            ld [velocityBallX], a
+            ; ...and assign paddle's velocity to ball Y velocity
+            ld a, [velocityP2]
+            ld [velocityBallY], a 
 
 
+    .notP2
+    ld a, [velocityBallX]
+    sub VELOCITY_ZERO_OFFSET ;remove ofset
+
+    push af
+    ; calculate complement mask to store in b
+    and %11000000
+    ld b, a
+    rr b
+    or b
+    rr b
+    or b
+    ld b, a
+    ; done, B will hold F0 if velocity is negative else 00
+    pop af
+
+    swap a
+    push af
+    and $0F ;lower nibble is pixel unit velocity
+    or b ;apply complement mask
+    ld d, a ;store in higher byte
+
+    swap b
+    pop af
+    and $F0 ;higher nibble is subpixel velocity
+    or b ;apply complement mask
+    ld e, a ;store in lower byte
 
 
+    ;add velocity 
+    add hl, de
 
+    ;save values:
+    ld a, l
+    ld [subpixelBallX], a ;save subpixel part of P1 Y position
+    ld a, h
+    ld [Ball + XPOS], a ;save pixel part of P1 Y position
 
 ret
 
+
+.prepareScoringP1
+
+.prepareScoringP2
     
 scoring::
 
 
     ret
+
+
+
+    
