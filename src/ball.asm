@@ -50,7 +50,7 @@ launchingSetup::
 
     ;load positive x speed into the ball
     ld a, BALL_X_SPEED
-    ld [ballXSPEED], a
+    ld [velocityBallX], a
     ;now load the player's shadow OAM address into the launchingPlayer variable
     ld a, low(P1OBJ)
     ld [launchingPlayer], a
@@ -77,7 +77,7 @@ ret
 
     ;load negative x speed into the ball (2's complement)
     ld a, - BALL_X_SPEED
-    ld [ballXSPEED], a
+    ld [velocityBallX], a
     ;now load the player's shadow OAM address into the launchingPlayer variable
     ld a, low(P2OBJ)
     ld [launchingPlayer], a
@@ -181,7 +181,7 @@ launching::
 .notP2
     ;now hl holds the velocity address
     ld a, [hl]
-    ld [ballYSPEED], a ;load as ball's new speed
+    ld [velocityBallY], a ;load as ball's new speed
 
     ; now update ball state:
     ld a, low(playing)
@@ -193,16 +193,88 @@ launching::
 
 playing::
     
+ ;      -------------------------- Ball Vertical Movement---------------------------
+updateBallY:
+    ; hl should hold the ball's fixed point Y position
+    ld a, [subpixelBallY]
+    ld l, a
+    ld a, [Ball + YPOS]
+    cp COURT_UPPER_LIMIT
+    jr nc, .belowUpperLimit
+        ; if we got here we crossed upper limit
+        
+        ;first check if velocity is going the wrong way
+        ld a, [velocityBallY]
+        cp VELOCITY_ZERO_OFFSET
+        jr nc, .velocityOK ;skip if ball going down
+        ; Now flip the velocity!
+        sub VELOCITY_ZERO_OFFSET
+        cpl a
+        add VELOCITY_ZERO_OFFSET
+    jr .velocityOK
+.belowUpperLimit
+    cp COURT_LOWER_LIMIT - TILE_DIMENTION
+    jr c, .aboveLowerLimit
+        ;if we got here we crossed the lower limit
+
+        ;first check if velocity is going the wrong way
+        ld a, [velocityBallY]
+        cp VELOCITY_ZERO_OFFSET
+        jr c, .velocityOK  ;skip if going the other way
+        ; Now flip the velocity!
+        sub VELOCITY_ZERO_OFFSET
+        cpl a
+        add VELOCITY_ZERO_OFFSET
+.velocityOK
+        ld [velocityBallY], a ;save velocity
+        ld a, [Ball + YPOS]
+.aboveLowerLimit
+    ld h, a
+    ld a, [velocityBallY]
+    sub VELOCITY_ZERO_OFFSET ;remove ofset
+
+    push af
+    ; calculate complement mask to store in b
+    and %11000000
+    ld b, a
+    rr b
+    or b
+    rr b
+    or b
+    ld b, a
+    ; done, B will hold F0 if velocity is negative else 00
+    pop af
+
+    swap a
+    push af
+    and $0F ;lower nibble is pixel unit velocity
+    or b ;apply complement mask
+    ld d, a ;store in higher byte
+
+    swap b
+    pop af
+    and $F0 ;higher nibble is subpixel velocity
+    or b ;apply complement mask
+    ld e, a ;store in lower byte
+
+
+    ;add velocity 
+    add hl, de
+
+    ;save values:
+    ld a, l
+    ld [subpixelBallY], a ;save subpixel part of P1 Y position
+    ld a, h
+    ld [Ball + YPOS], a ;save pixel part of P1 Y position
+ ;      -------------------------- Ball Horizontal Movement---------------------------
+updateBallX:
 
 
 
 
 
 
-
-
-
-
+ret
 
     
 scoring::

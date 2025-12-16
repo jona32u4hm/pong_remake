@@ -76,7 +76,7 @@ Setup::
 	ld	bc, PaddleObjEND - PaddleObj
 	call	memLoad
 	;setup paddle velocity to offsetted zero used for negative numbers
-	ld a, PADDLE_ZERO_OFFSET
+	ld a, VELOCITY_ZERO_OFFSET
 	ld [velocityP1], a
 	ld [velocityP2], a
 	;setup ball variables:

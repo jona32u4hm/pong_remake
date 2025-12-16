@@ -26,7 +26,7 @@ JoyPad:: ds 1
 
 Control_Variables:
 ds 1
-;Paddle 1 physics
+;Paddle physics
 ; uses fixed point between nibbles 
 velocityP1:: ds 1
 velocityP2:: ds 1
@@ -35,8 +35,11 @@ subpixelP2:: ds 1
 
 ballState:: ds 2
 ballCounter:: ds 1
-ballYSPEED:: ds 1
-ballXSPEED:: ds 1
+
+;Ball physics
+; uses fixed point between nibbles 
+velocityBallY:: ds 1
+velocityBallX:: ds 1
 subpixelBallX::ds 1
 subpixelBallY::ds 1
 

@@ -2,7 +2,7 @@ SECTION "Paddle Control", ROM0
 
 DEF MAX_PADDLE_VEL EQU %00_10_1000 ; DO NOT USE FIRST 2 BYTES as those are used to detect negative numbers
 DEF PADDLE_ACCEL   EQU %00_00_0010
-DEF PADDLE_ZERO_OFFSET    EQU 128  ; offset for negative numbers in movePaddle,
+DEF VELOCITY_ZERO_OFFSET    EQU 128  ; offset for signed velocities in movePaddle,
                             ; which negative numpers more confortable to
                             ; work with when using c flag...
 DEF PADDLE_WIDTH EQU 4*8
@@ -12,7 +12,7 @@ DEF PADDLE_WIDTH EQU 4*8
 DEF COURT_UPPER_LIMIT EQU (2+1)*8
 DEF COURT_LOWER_LIMIT EQU (2+18)*8
 
-export PADDLE_ZERO_OFFSET 
+export VELOCITY_ZERO_OFFSET 
 export PADDLE_WIDTH
 export COURT_UPPER_LIMIT 
 export COURT_LOWER_LIMIT
@@ -30,7 +30,7 @@ movePaddle:
     jr z,.moveDown 
     ; --------- accelerate up ----------
     ld a, [hl] 
-    cp PADDLE_ZERO_OFFSET - MAX_PADDLE_VEL ;max negative (upwards) velocity
+    cp VELOCITY_ZERO_OFFSET - MAX_PADDLE_VEL ;max negative (upwards) velocity
     ; c set if a < -max      
     jr c,.moveDown ;no need to accelerate if velocity reached its max
     sub a, PADDLE_ACCEL ;accelerate upwards
@@ -43,7 +43,7 @@ movePaddle:
     jr z,.break
     ; --------- accelerate down ----------
     ld a, [hl] 
-    cp PADDLE_ZERO_OFFSET + MAX_PADDLE_VEL ;max positive (downwards) velocity
+    cp VELOCITY_ZERO_OFFSET + MAX_PADDLE_VEL ;max positive (downwards) velocity
     ; c not set if a >= max
     jr nc, .break ;no need to accelerate if velocity reached its max
 
@@ -56,7 +56,7 @@ movePaddle:
     ret nz ;return if input
     ;otherwise, since there's no input we must apply friction
     ld a, [hl]
-    cp PADDLE_ZERO_OFFSET 
+    cp VELOCITY_ZERO_OFFSET 
     ret z ;if zero, there's no movement nor need to apply friction
 
     jr nc, .negativeFriction ;if a > 0, friction is negative
@@ -115,10 +115,10 @@ updateP1Pos:
 
         ;first check if velocity is going the wrong way
         ld a, [velocityP1]
-        cp PADDLE_ZERO_OFFSET
+        cp VELOCITY_ZERO_OFFSET
         jr nc, .velocityOK ;skip if going the other way
 
-        ld a, PADDLE_ZERO_OFFSET 
+        ld a, VELOCITY_ZERO_OFFSET 
         ld [velocityP1], a ; set velocity to zero
         ld a, COURT_UPPER_LIMIT
         jr .aboveLowerLimit
@@ -132,22 +132,23 @@ updateP1Pos:
 
         ;first check if velocity is going the wrong way
         ld a, [velocityP1]
-        cp PADDLE_ZERO_OFFSET
+        cp VELOCITY_ZERO_OFFSET
         jr c, .velocityOK  ;skip if going the other way
 
-        ld a, PADDLE_ZERO_OFFSET 
+        ld a, VELOCITY_ZERO_OFFSET 
         ld [velocityP1], a ; set velocity to zero
         ld a, COURT_LOWER_LIMIT - PADDLE_WIDTH
 .aboveLowerLimit
     ld h, a
     ld a, [velocityP1]
-    sub PADDLE_ZERO_OFFSET ;remove ofset
+    sub VELOCITY_ZERO_OFFSET ;remove ofset
 
     push af
     ; calculate complement mask to store in b
     and %11000000
     ld b, a
     rr b
+    or b
     rr b
     or b
     ld b, a
@@ -191,10 +192,10 @@ updateP2Pos:
 
         ;first check if velocity is going the wrong way
         ld a, [velocityP2]
-        cp PADDLE_ZERO_OFFSET
+        cp VELOCITY_ZERO_OFFSET
         jr nc, .velocityOK  ; skip if going the other way
 
-        ld a, PADDLE_ZERO_OFFSET
+        ld a, VELOCITY_ZERO_OFFSET
         ld [velocityP2], a ; set velocity to zero
         ld a, COURT_UPPER_LIMIT
         jr .aboveLowerLimit
@@ -208,22 +209,23 @@ updateP2Pos:
 
         ;first check if velocity is going the wrong way
         ld a, [velocityP2]
-        cp PADDLE_ZERO_OFFSET
+        cp VELOCITY_ZERO_OFFSET
         jr c, .velocityOK ; skip if going the other way
 
-        ld a, PADDLE_ZERO_OFFSET
+        ld a, VELOCITY_ZERO_OFFSET
         ld [velocityP2], a ; set velocity to zero
         ld a, COURT_LOWER_LIMIT - PADDLE_WIDTH
 .aboveLowerLimit
     ld h, a
     ld a, [velocityP2]
-    sub PADDLE_ZERO_OFFSET ;remove offset
+    sub VELOCITY_ZERO_OFFSET ;remove offset
 
     push af
     ; calculate complement mask to store in b
     and %11000000
     ld b, a
     rr b
+    or b
     rr b
     or b
     ld b, a
