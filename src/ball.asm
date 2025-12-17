@@ -249,7 +249,7 @@ updateBallY:
     rr b
     or b
     ld b, a
-    ; done, B will hold F0 if velocity is negative else 00
+    ; done, B will hold F8 if velocity is negative else 00
     pop af
 
     ;divide velocity by 4 (if not its too fast)
@@ -261,7 +261,12 @@ updateBallY:
     or b ;apply complement mask
     ld d, a ;store in higher byte
 
-    swap b
+    ;now swap b removing the extra bit on the lower nibble from $F8
+    ld b, a
+    and $F0
+    swap a
+    ld b, a
+
     pop af
     and $F0 ;higher nibble is subpixel velocity
     or b ;apply complement mask
