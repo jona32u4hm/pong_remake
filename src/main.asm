@@ -1,5 +1,11 @@
 INCLUDE "include/hardware.inc"
 
+
+def OBJ_Y_OFFSET EQU 2
+def TILE_DIMENTION EQU 8
+export OBJ_Y_OFFSET
+export TILE_DIMENTION
+
 SECTION "Main", ROM0
 
 
@@ -70,11 +76,15 @@ Setup::
 	ld	bc, PaddleObjEND - PaddleObj
 	call	memLoad
 	;setup paddle velocity to offsetted zero used for negative numbers
-	ld a, PADDLE_ZERO_OFFSET
+	ld a, VELOCITY_ZERO_OFFSET
 	ld [velocityP1], a
 	ld [velocityP2], a
-
-
+	;setup ball variables:
+	ld a, low(launchingSetup)
+    ld [ballState], a
+    ld a, high(launchingSetup)
+    ld [ballState + 1], a
+	
 
 Main::
 	halt 
@@ -82,5 +92,6 @@ Main::
 
 	call readJoyPad
 	call updatePaddles
+	call updateBall
 
 	jr Main
