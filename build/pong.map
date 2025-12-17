@@ -1,17 +1,23 @@
 SUMMARY:
-	ROM0: 2106 bytes used / 14278 free
-	WRAM0: 96 bytes used / 4000 free
+	ROM0: 3527 bytes used / 12857 free
+	WRAM0: 204 bytes used / 3892 free
 	HRAM: 12 bytes used / 115 free
 
 ROM0 bank #0:
-	SECTION: $0000-$000d ($000e bytes) ["Memory Routines"]
+	SECTION: $0000-$0032 ($0033 bytes) ["Memory Routines"]
 	         $0000 = memLoad
 	         $0004 = memLoad.loop
 	         $0007 = memLoad.skip
-	SECTION: $000e-$0019 ($000c bytes) ["VBlank Routine"]
-	         $000e = DMACode
-	         $001a = DMACodeEnd
-	EMPTY: $001a-$003f ($0026 bytes)
+	         $000e = memSet
+	         $0012 = memSet.loop
+	         $0014 = memSet.skip
+	         $001b = mapLoad
+	         $001b = mapLoad.y
+	         $001c = mapLoad.x
+	SECTION: $0033-$003e ($000c bytes) ["VBlank Routine"]
+	         $0033 = DMACode
+	         $003f = DMACodeEnd
+	EMPTY: $003f-$003f ($0001 byte)
 	SECTION: $0040-$0042 ($0003 bytes) ["Vblank"]
 	EMPTY: $0043-$0047 ($0005 bytes)
 	SECTION: $0048-$0048 ($0001 byte) ["LCDC"]
@@ -21,22 +27,90 @@ ROM0 bank #0:
 	SECTION: $0058-$0058 ($0001 byte) ["Serial"]
 	EMPTY: $0059-$005f ($0007 bytes)
 	SECTION: $0060-$0060 ($0001 byte) ["Joypad"]
-	SECTION: $0061-$00b9 ($0059 bytes) ["Main"]
+	SECTION: $0061-$00f9 ($0099 bytes) ["Main"]
 	         $0061 = Setup
 	         $0093 = Setup.waitVBlank
-	EMPTY: $00ba-$00ff ($0046 bytes)
+	         $00ed = Main
+	EMPTY: $00fa-$00ff ($0006 bytes)
 	SECTION: $0100-$014f ($0050 bytes) ["Header"]
-	SECTION: $0150-$08bf ($0770 bytes) ["Tiles"]
+	SECTION: $0150-$0a69 ($091a bytes) ["Tiles"]
 	         $0150 = Tiles
+	         $08c0 = Tennis
 	         $08c0 = TilesEnd
-	EMPTY: $08c0-$3fff ($3740 bytes)
-	TOTAL EMPTY: $37c6 bytes
+	         $0a46 = TennisEnd
+	         $0a46 = PaddleObj
+	         $0a6a = PaddleObjEND
+	SECTION: $0a6a-$0c99 ($0230 bytes) ["Ball implementation"]
+	         $0a6a = updateBall
+	         $0a73 = launchingSetup
+	         $0a84 = launchingSetup.firstPlayer
+	         $0aaf = launchingSetup.secondPlayer
+	         $0ada = moving
+	         $0afe = counting
+	         $0b28 = counting.blinkBall
+	         $0b2c = counting.startLaunch
+	         $0b3c = launching
+	         $0b49 = launching.notP2
+	         $0b5e = playing
+	         $0b5e = updateBallY
+	         $0b77 = updateBallY.belowUpperLimit
+	         $0b87 = updateBallY.velocityOK
+	         $0b8d = updateBallY.aboveLowerLimit
+	         $0bc2 = updateBallX
+	         $0c02 = updateBallX.notP1
+	         $0c30 = updateBallX.notP2
+	         $0c59 = updateBallX.prepareScoringP2
+	         $0c67 = updateBallX.prepareScoringP1
+	         $0c73 = updateBallX.prepareScoring
+	         $0c87 = scoring
+	SECTION: $0c9a-$0dba ($0121 bytes) ["Paddle Control"]
+	         $0c9a = movePaddle
+	         $0c9b = movePaddle.moveUp
+	         $0ca7 = movePaddle.moveDown
+	         $0cb4 = movePaddle.break
+	         $0cbe = movePaddle.positiveFriction
+	         $0cc1 = movePaddle.negativeFriction
+	         $0cc4 = updatePaddles
+	         $0ce6 = updateP1Pos
+	         $0d01 = updateP1Pos.velocityOK
+	         $0d06 = updateP1Pos.belowUpperLimit
+	         $0d18 = updateP1Pos.aboveLowerLimit
+	         $0d50 = updateP2Pos
+	         $0d6b = updateP2Pos.velocityOK
+	         $0d70 = updateP2Pos.belowUpperLimit
+	         $0d82 = updateP2Pos.aboveLowerLimit
+	SECTION: $0dbb-$0de7 ($002d bytes) ["Input"]
+	         $0dbb = readJoyPad
+	EMPTY: $0de8-$3fff ($3218 bytes)
+	TOTAL EMPTY: $3239 bytes
 
 WRAM0 bank #0:
-	SECTION: $c000-$c05f ($0060 bytes) ["WRAM"]
+	SECTION: $c000-$c0cb ($00cc bytes) ["WRAM"]
 	         $c000 = OAM_Source
-	EMPTY: $c060-$cfff ($0fa0 bytes)
-	TOTAL EMPTY: $0fa0 bytes
+	         $c000 = P1OBJ
+	         $c010 = P2OBJ
+	         $c020 = Ball
+	         $c024 = OAM_Other
+	         $c0bb = JoyPad
+	         $c0bb = OAM_Source_END
+	         $c0bb = Hardware_Variables
+	         $c0bc = Control_Variables
+	         $c0bd = velocityP1
+	         $c0be = velocityP2
+	         $c0bf = subpixelP1
+	         $c0c0 = subpixelP2
+	         $c0c1 = ballState
+	         $c0c3 = ballCounter
+	         $c0c4 = velocityBallY
+	         $c0c5 = velocityBallX
+	         $c0c6 = subpixelBallX
+	         $c0c7 = subpixelBallY
+	         $c0c8 = scoreP1
+	         $c0c9 = scoreP2
+	         $c0ca = setUp2Here
+	         $c0cb = launchingPlayer
+	EMPTY: $c0cc-$cfff ($0f34 bytes)
+	TOTAL EMPTY: $0f34 bytes
 
 HRAM bank #0:
 	SECTION: $ff80-$ff8b ($000c bytes) ["DMA routine"]
