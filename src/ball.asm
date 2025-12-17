@@ -28,8 +28,12 @@ updateBall::
     jp hl
 
 launchingSetup:: 
-
-
+    ;setup counter for next state:
+    ld a, 128
+    ld [ballCounter], a
+    ;show ball:
+    ld a, $28
+    ld [Ball + TILE], a
     ;launchingPlayer will hold a 1 in the LSB for second player or a 0 for first player
     ld a, [launchingPlayer]
     and 1
@@ -418,13 +422,44 @@ updateBallX:
 ret
 
 
-.prepareScoringP1
-
 .prepareScoringP2
-    
+    ld a, [scoreP2]
+    inc a
+    ld [scoreP2], a
+    ;launchingPlayer will hold a 1 in the LSB for second player 
+    ld a, 1
+    ld [launchingPlayer], a
+    jr .prepareScoring
+.prepareScoringP1
+    ld a, [scoreP1]
+    inc a
+    ld [scoreP1], a
+    ;launchingPlayer will hold a 0 in the LSB for first player
+    ld a, 0
+    ld [launchingPlayer], a
+.prepareScoring
+    ld a, low(scoring)
+    ld [ballState], a
+    ld a, high(scoring)
+    ld [ballState + 1], a
+
+    ; Start counter for next state:
+    ld a, 20
+    ld [ballCounter], a
+    ld a, 0
+    ld [Ball + TILE], a
 scoring::
 
-
+    ; decrement counter:
+    ld a, [ballCounter]
+    dec a
+    ld [ballCounter],a
+    ret nz; return if still not time for next state
+    ;if not, update state:
+    ld a, low(launchingSetup)
+    ld [ballState], a
+    ld a, high(launchingSetup)
+    ld [ballState + 1], a
     ret
 
 

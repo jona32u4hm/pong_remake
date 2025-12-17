@@ -1,6 +1,6 @@
 SUMMARY:
-	ROM0: 3453 bytes used / 12931 free
-	WRAM0: 201 bytes used / 3895 free
+	ROM0: 3527 bytes used / 12857 free
+	WRAM0: 204 bytes used / 3892 free
 	HRAM: 12 bytes used / 115 free
 
 ROM0 bank #0:
@@ -40,51 +40,52 @@ ROM0 bank #0:
 	         $0a46 = TennisEnd
 	         $0a46 = PaddleObj
 	         $0a6a = PaddleObjEND
-	SECTION: $0a6a-$0c4f ($01e6 bytes) ["Ball implementation"]
+	SECTION: $0a6a-$0c99 ($0230 bytes) ["Ball implementation"]
 	         $0a6a = updateBall
 	         $0a73 = launchingSetup
-	         $0a7a = launchingSetup.firstPlayer
-	         $0aa5 = launchingSetup.secondPlayer
-	         $0ad0 = moving
-	         $0af4 = counting
-	         $0b1e = counting.blinkBall
-	         $0b22 = counting.startLaunch
-	         $0b32 = launching
-	         $0b3f = launching.notP2
-	         $0b54 = playing
-	         $0b54 = updateBallY
-	         $0b6d = updateBallY.belowUpperLimit
-	         $0b7d = updateBallY.velocityOK
-	         $0b83 = updateBallY.aboveLowerLimit
-	         $0bb8 = updateBallX
-	         $0bf8 = updateBallX.notP1
-	         $0c26 = updateBallX.notP2
-	         $0c4f = updateBallX.prepareScoringP2
-	         $0c4f = updateBallX.prepareScoringP1
-	         $0c4f = scoring
-	SECTION: $0c50-$0d70 ($0121 bytes) ["Paddle Control"]
-	         $0c50 = movePaddle
-	         $0c51 = movePaddle.moveUp
-	         $0c5d = movePaddle.moveDown
-	         $0c6a = movePaddle.break
-	         $0c74 = movePaddle.positiveFriction
-	         $0c77 = movePaddle.negativeFriction
-	         $0c7a = updatePaddles
-	         $0c9c = updateP1Pos
-	         $0cb7 = updateP1Pos.velocityOK
-	         $0cbc = updateP1Pos.belowUpperLimit
-	         $0cce = updateP1Pos.aboveLowerLimit
-	         $0d06 = updateP2Pos
-	         $0d21 = updateP2Pos.velocityOK
-	         $0d26 = updateP2Pos.belowUpperLimit
-	         $0d38 = updateP2Pos.aboveLowerLimit
-	SECTION: $0d71-$0d9d ($002d bytes) ["Input"]
-	         $0d71 = readJoyPad
-	EMPTY: $0d9e-$3fff ($3262 bytes)
-	TOTAL EMPTY: $3283 bytes
+	         $0a84 = launchingSetup.firstPlayer
+	         $0aaf = launchingSetup.secondPlayer
+	         $0ada = moving
+	         $0afe = counting
+	         $0b28 = counting.blinkBall
+	         $0b2c = counting.startLaunch
+	         $0b3c = launching
+	         $0b49 = launching.notP2
+	         $0b5e = playing
+	         $0b5e = updateBallY
+	         $0b77 = updateBallY.belowUpperLimit
+	         $0b87 = updateBallY.velocityOK
+	         $0b8d = updateBallY.aboveLowerLimit
+	         $0bc2 = updateBallX
+	         $0c02 = updateBallX.notP1
+	         $0c30 = updateBallX.notP2
+	         $0c59 = updateBallX.prepareScoringP2
+	         $0c67 = updateBallX.prepareScoringP1
+	         $0c73 = updateBallX.prepareScoring
+	         $0c87 = scoring
+	SECTION: $0c9a-$0dba ($0121 bytes) ["Paddle Control"]
+	         $0c9a = movePaddle
+	         $0c9b = movePaddle.moveUp
+	         $0ca7 = movePaddle.moveDown
+	         $0cb4 = movePaddle.break
+	         $0cbe = movePaddle.positiveFriction
+	         $0cc1 = movePaddle.negativeFriction
+	         $0cc4 = updatePaddles
+	         $0ce6 = updateP1Pos
+	         $0d01 = updateP1Pos.velocityOK
+	         $0d06 = updateP1Pos.belowUpperLimit
+	         $0d18 = updateP1Pos.aboveLowerLimit
+	         $0d50 = updateP2Pos
+	         $0d6b = updateP2Pos.velocityOK
+	         $0d70 = updateP2Pos.belowUpperLimit
+	         $0d82 = updateP2Pos.aboveLowerLimit
+	SECTION: $0dbb-$0de7 ($002d bytes) ["Input"]
+	         $0dbb = readJoyPad
+	EMPTY: $0de8-$3fff ($3218 bytes)
+	TOTAL EMPTY: $3239 bytes
 
 WRAM0 bank #0:
-	SECTION: $c000-$c0c8 ($00c9 bytes) ["WRAM"]
+	SECTION: $c000-$c0cb ($00cc bytes) ["WRAM"]
 	         $c000 = OAM_Source
 	         $c000 = P1OBJ
 	         $c010 = P2OBJ
@@ -104,10 +105,12 @@ WRAM0 bank #0:
 	         $c0c5 = velocityBallX
 	         $c0c6 = subpixelBallX
 	         $c0c7 = subpixelBallY
-	         $c0c8 = launchingPlayer
-	         $c0c9 = setUp2Here
-	EMPTY: $c0c9-$cfff ($0f37 bytes)
-	TOTAL EMPTY: $0f37 bytes
+	         $c0c8 = scoreP1
+	         $c0c9 = scoreP2
+	         $c0ca = setUp2Here
+	         $c0cb = launchingPlayer
+	EMPTY: $c0cc-$cfff ($0f34 bytes)
+	TOTAL EMPTY: $0f34 bytes
 
 HRAM bank #0:
 	SECTION: $ff80-$ff8b ($000c bytes) ["DMA routine"]

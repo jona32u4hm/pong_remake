@@ -43,8 +43,11 @@ velocityBallX:: ds 1
 subpixelBallX::ds 1
 subpixelBallY::ds 1
 
-
-launchingPlayer:: ds 1
-
+scoreP1:: ds 1
+scoreP2:: ds 1
 
 setUp2Here::
+
+ds 1
+
+launchingPlayer:: ds 1
