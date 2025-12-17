@@ -1,6 +1,6 @@
 SECTION "Ball implementation", ROM0
 
-DEF BALL_X_SPEED EQU %00_10_1000
+DEF BALL_X_SPEED EQU %00_01_0000
 
 export BALL_X_SPEED
 
@@ -181,6 +181,9 @@ launching::
 .notP2
     ;now hl holds the velocity address
     ld a, [hl]
+    sub VELOCITY_ZERO_OFFSET
+    rr a ;divide by 2
+    add VELOCITY_ZERO_OFFSET
     ld [velocityBallY], a ;load as ball's new speed
 
     ; now update ball state:
@@ -235,8 +238,12 @@ updateBallY:
 
     push af
     ; calculate complement mask to store in b
-    and %11000000
+    and %10000000
     ld b, a
+    rr b
+    or b
+    rr b
+    or b
     rr b
     or b
     rr b
@@ -244,6 +251,9 @@ updateBallY:
     ld b, a
     ; done, B will hold F0 if velocity is negative else 00
     pop af
+
+    ;divide velocity by 4 (if not its too fast)
+    rr a
 
     swap a
     push af
@@ -276,9 +286,9 @@ updateBallX:
     ld h, a
     ;first check if any player has scored (ball is off limits)
     cp COURT_LEFT_LIMIT 
-    jr c,.prepareScoringP2
+    jp c,.prepareScoringP2
     cp COURT_RIGHT_LIMIT - TILE_DIMENTION
-    jr nc,.prepareScoringP1
+    jp nc,.prepareScoringP1
 
     ;now check if ball has entered players' area...
 
@@ -300,7 +310,7 @@ updateBallX:
         ; a now holds paddle's lower corner Y position 
         cp b ;c-flag reset if paddle lower corner below ball
         jr c, .notP2
-        sub PADDLE_WIDTH - TILE_DIMENTION
+        sub PADDLE_WIDTH + TILE_DIMENTION
         ; a now holds paddle's upper corner Y position - ball width
         cp b ;c-flag set if paddle upper corner above ball lower corner
         jr nc, .notP2
@@ -309,8 +319,16 @@ updateBallX:
             ;now bounce ball...
             ld a,  VELOCITY_ZERO_OFFSET + BALL_X_SPEED
             ld [velocityBallX], a
+
+            ;THIS IS WHERE CHANGES TO BALL ACCELERATION/FRICTION MECHANICS SHOULD BE DONE
             ; ...and assign paddle's velocity to ball Y velocity
             ld a, [velocityP1]
+            ;------uncomment this to account for friction and impulse buildup
+            sub VELOCITY_ZERO_OFFSET
+            ld b, a
+            ld a, [velocityBallY]
+            add b
+            ;-------
             ld [velocityBallY], a 
 
     .notP1
@@ -332,7 +350,7 @@ updateBallX:
         ; a now holds paddle's lower corner Y position 
         cp b ;c-flag reset if paddle lower corner below ball
         jr c, .notP2
-        sub PADDLE_WIDTH - TILE_DIMENTION
+        sub PADDLE_WIDTH + TILE_DIMENTION
         ; a now holds paddle's upper corner Y position - ball width
         cp b ;c-flag set if paddle upper corner above ball lower corner
         jr nc, .notP2
@@ -341,8 +359,16 @@ updateBallX:
             ;now bounce ball...
             ld a, VELOCITY_ZERO_OFFSET - BALL_X_SPEED
             ld [velocityBallX], a
+
+            ;THIS IS WHERE CHANGES TO BALL ACCELERATION/FRICTION MECHANICS SHOULD BE DONE
             ; ...and assign paddle's velocity to ball Y velocity
             ld a, [velocityP2]
+            ;------uncomment this to account for friction and impulse buildup
+            sub VELOCITY_ZERO_OFFSET
+            ld b, a
+            ld a, [velocityBallY]
+            add b
+            ;-------
             ld [velocityBallY], a 
 
 
