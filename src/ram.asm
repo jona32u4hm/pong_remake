@@ -51,3 +51,7 @@ setUp2Here::
 ds 1
 
 launchingPlayer:: ds 1
+;score markers. must be next to eachother in ram for setup...
+scoreMarkerP1:: ds 4
+scoreMarkerP2:: ds 4
+;

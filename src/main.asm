@@ -84,6 +84,11 @@ Setup::
     ld [ballState], a
     ld a, high(launchingSetup)
     ld [ballState + 1], a
+	;setup score markers in ram:
+	ld a, $04 ; 0 character tile number
+	ld de, scoreMarkerP1
+	ld bc, scoreMarkerP2 + 4 - scoreMarkerP1 
+	call memSet
 	
 
 Main::
