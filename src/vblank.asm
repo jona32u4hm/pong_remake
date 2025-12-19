@@ -17,7 +17,6 @@ DMACodeEnd::
 
 updateMarkerMap::
     ;this will copy tiles one by one to finish faster... (it's not strictly necessary because of the small size though)
- 
     ld a, [scoreMarkerP1 + 0]
     ld [$9800], a
     ld a, [scoreMarkerP1 + 1]

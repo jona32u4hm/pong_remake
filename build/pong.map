@@ -1,5 +1,5 @@
 SUMMARY:
-	ROM0: 3589 bytes used / 12795 free
+	ROM0: 3626 bytes used / 12758 free
 	WRAM0: 212 bytes used / 3884 free
 	HRAM: 13 bytes used / 114 free
 
@@ -30,7 +30,12 @@ ROM0 bank #0:
 	         $007d = mapLoad.x
 	SECTION: $0094-$00c0 ($002d bytes) ["Input"]
 	         $0094 = readJoyPad
-	EMPTY: $00c1-$00ff ($003f bytes)
+	SECTION: $00c1-$00e2 ($0022 bytes) ["Score update"]
+	         $00c1 = updateScore
+	         $00c4 = updateScore.checkCarry
+	         $00d2 = nextMarker
+	         $00d5 = nextMarker.checkCarry
+	EMPTY: $00e3-$00ff ($001d bytes)
 	SECTION: $0100-$014f ($0050 bytes) ["Header"]
 	SECTION: $0150-$0a69 ($091a bytes) ["Tiles"]
 	         $0150 = Tiles
@@ -78,12 +83,12 @@ ROM0 bank #0:
 	         $0d6b = updateP2Pos.velocityOK
 	         $0d70 = updateP2Pos.belowUpperLimit
 	         $0d82 = updateP2Pos.aboveLowerLimit
-	SECTION: $0dbb-$0e5e ($00a4 bytes) ["Main"]
+	SECTION: $0dbb-$0e61 ($00a7 bytes) ["Main"]
 	         $0dbb = Setup
 	         $0ded = Setup.waitVBlank
 	         $0e52 = Main
-	EMPTY: $0e5f-$3fff ($31a1 bytes)
-	TOTAL EMPTY: $31fb bytes
+	EMPTY: $0e62-$3fff ($319e bytes)
+	TOTAL EMPTY: $31d6 bytes
 
 WRAM0 bank #0:
 	SECTION: $c000-$c0d3 ($00d4 bytes) ["WRAM"]
