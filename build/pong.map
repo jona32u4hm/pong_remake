@@ -1,22 +1,13 @@
 SUMMARY:
-	ROM0: 3527 bytes used / 12857 free
-	WRAM0: 204 bytes used / 3892 free
-	HRAM: 12 bytes used / 115 free
+	ROM0: 3626 bytes used / 12758 free
+	WRAM0: 212 bytes used / 3884 free
+	HRAM: 13 bytes used / 114 free
 
 ROM0 bank #0:
-	SECTION: $0000-$0032 ($0033 bytes) ["Memory Routines"]
-	         $0000 = memLoad
-	         $0004 = memLoad.loop
-	         $0007 = memLoad.skip
-	         $000e = memSet
-	         $0012 = memSet.loop
-	         $0014 = memSet.skip
-	         $001b = mapLoad
-	         $001b = mapLoad.y
-	         $001c = mapLoad.x
-	SECTION: $0033-$003e ($000c bytes) ["VBlank Routine"]
-	         $0033 = DMACode
-	         $003f = DMACodeEnd
+	SECTION: $0000-$003e ($003f bytes) ["VBlank Routine"]
+	         $0000 = DMACode
+	         $000d = updateMarkerMap
+	         $000d = DMACodeEnd
 	EMPTY: $003f-$003f ($0001 byte)
 	SECTION: $0040-$0042 ($0003 bytes) ["Vblank"]
 	EMPTY: $0043-$0047 ($0005 bytes)
@@ -27,11 +18,24 @@ ROM0 bank #0:
 	SECTION: $0058-$0058 ($0001 byte) ["Serial"]
 	EMPTY: $0059-$005f ($0007 bytes)
 	SECTION: $0060-$0060 ($0001 byte) ["Joypad"]
-	SECTION: $0061-$00f9 ($0099 bytes) ["Main"]
-	         $0061 = Setup
-	         $0093 = Setup.waitVBlank
-	         $00ed = Main
-	EMPTY: $00fa-$00ff ($0006 bytes)
+	SECTION: $0061-$0093 ($0033 bytes) ["Memory Routines"]
+	         $0061 = memLoad
+	         $0065 = memLoad.loop
+	         $0068 = memLoad.skip
+	         $006f = memSet
+	         $0073 = memSet.loop
+	         $0075 = memSet.skip
+	         $007c = mapLoad
+	         $007c = mapLoad.y
+	         $007d = mapLoad.x
+	SECTION: $0094-$00c0 ($002d bytes) ["Input"]
+	         $0094 = readJoyPad
+	SECTION: $00c1-$00e2 ($0022 bytes) ["Score update"]
+	         $00c1 = updateScore
+	         $00c4 = updateScore.checkCarry
+	         $00d2 = nextMarker
+	         $00d5 = nextMarker.checkCarry
+	EMPTY: $00e3-$00ff ($001d bytes)
 	SECTION: $0100-$014f ($0050 bytes) ["Header"]
 	SECTION: $0150-$0a69 ($091a bytes) ["Tiles"]
 	         $0150 = Tiles
@@ -79,13 +83,15 @@ ROM0 bank #0:
 	         $0d6b = updateP2Pos.velocityOK
 	         $0d70 = updateP2Pos.belowUpperLimit
 	         $0d82 = updateP2Pos.aboveLowerLimit
-	SECTION: $0dbb-$0de7 ($002d bytes) ["Input"]
-	         $0dbb = readJoyPad
-	EMPTY: $0de8-$3fff ($3218 bytes)
-	TOTAL EMPTY: $3239 bytes
+	SECTION: $0dbb-$0e61 ($00a7 bytes) ["Main"]
+	         $0dbb = Setup
+	         $0ded = Setup.waitVBlank
+	         $0e52 = Main
+	EMPTY: $0e62-$3fff ($319e bytes)
+	TOTAL EMPTY: $31d6 bytes
 
 WRAM0 bank #0:
-	SECTION: $c000-$c0cb ($00cc bytes) ["WRAM"]
+	SECTION: $c000-$c0d3 ($00d4 bytes) ["WRAM"]
 	         $c000 = OAM_Source
 	         $c000 = P1OBJ
 	         $c010 = P2OBJ
@@ -109,12 +115,14 @@ WRAM0 bank #0:
 	         $c0c9 = scoreP2
 	         $c0ca = setUp2Here
 	         $c0cb = launchingPlayer
-	EMPTY: $c0cc-$cfff ($0f34 bytes)
-	TOTAL EMPTY: $0f34 bytes
+	         $c0cc = scoreMarkerP1
+	         $c0d0 = scoreMarkerP2
+	EMPTY: $c0d4-$cfff ($0f2c bytes)
+	TOTAL EMPTY: $0f2c bytes
 
 HRAM bank #0:
-	SECTION: $ff80-$ff8b ($000c bytes) ["DMA routine"]
+	SECTION: $ff80-$ff8c ($000d bytes) ["DMA routine"]
 	         $ff80 = VBlankISR
 	         $ff87 = VBlankISR.wait
-	EMPTY: $ff8c-$fffe ($0073 bytes)
-	TOTAL EMPTY: $0073 bytes
+	EMPTY: $ff8d-$fffe ($0072 bytes)
+	TOTAL EMPTY: $0072 bytes

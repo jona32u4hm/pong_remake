@@ -423,19 +423,21 @@ ret
 
 
 .prepareScoringP2
-    ld a, [scoreP2]
+    ;first increment the units in the score marker (updateScore will take care of the rest)
+    ld a, [scoreMarkerP2 + 3]
     inc a
-    ld [scoreP2], a
+    ld [scoreMarkerP2 + 3], a
     ;launchingPlayer will hold a 1 in the LSB for second player 
-    ld a, 1
+    ld a, 1 
     ld [launchingPlayer], a
     jr .prepareScoring
 .prepareScoringP1
-    ld a, [scoreP1]
+    ;first increment the units in the score marker
+    ld a, [scoreMarkerP1 + 3]
     inc a
-    ld [scoreP1], a
+    ld [scoreMarkerP1 + 3], a
     ;launchingPlayer will hold a 0 in the LSB for first player
-    ld a, 0
+    ld a, 0 
     ld [launchingPlayer], a
 .prepareScoring
     ld a, low(scoring)
