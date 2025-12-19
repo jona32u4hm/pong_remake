@@ -12,6 +12,10 @@
 00:007c mapLoad.y
 00:007d mapLoad.x
 00:0094 readJoyPad
+00:00c1 updateScore
+00:00c4 updateScore.checkCarry
+00:00d2 nextMarker
+00:00d5 nextMarker.checkCarry
 00:0150 Tiles
 00:08c0 Tennis
 00:08c0 TilesEnd

@@ -98,5 +98,6 @@ Main::
 	call readJoyPad
 	call updatePaddles
 	call updateBall
+	call updateScore
 
 	jr Main
