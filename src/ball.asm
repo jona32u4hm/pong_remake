@@ -427,7 +427,8 @@ ret
     inc a
     ld [scoreP2], a
     ;launchingPlayer will hold a 1 in the LSB for second player 
-    ld a, 1
+    ld a, 1 ;also, since all other bytes are 0, score update routine will know
+            ; it must increment score
     ld [launchingPlayer], a
     jr .prepareScoring
 .prepareScoringP1
@@ -435,7 +436,8 @@ ret
     inc a
     ld [scoreP1], a
     ;launchingPlayer will hold a 0 in the LSB for first player
-    ld a, 0
+    ld a, 0 ;also, since all other bytes are 0, score update routine will know
+            ; it must increment score
     ld [launchingPlayer], a
 .prepareScoring
     ld a, low(scoring)
