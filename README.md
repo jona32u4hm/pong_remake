@@ -1,3 +1,5 @@
+<img width="347" height="325" alt="1770345126649862863285757915093" src="https://github.com/user-attachments/assets/7d7b58ec-bac0-47e0-8263-b05234249332" />
+
 # GB-Pong
 
 This project consists of a pong game for the original Nintendo GameBoy DMG-001, written entirely in assembly. One player uses the D-Pad up and down to control a paddle while the other player uses buttons A and B. Future versions could include Link-Cable support, but I'm planning to concentrate on programming modern hardware in future projects.
