@@ -7,17 +7,17 @@ This project consists of a pong game for the original Nintendo GameBoy DMG-001, 
 
 ## Build
 
-To build this program, first make sure you have RGBDS(the assembler executables) and Makefile in your computer. Then run ```make``` to generate the binary executable, ```pong.gb``` and an aditional file ```pong.sym``` which is useful for seeing the labels in the assembly code when debugging in an emulator.
+To build this program, first make sure you have RGBDS(the assembler executables) and Makefile in your computer. Then run ```make``` to generate the binary executable, ```pong.gb```, and an aditional file, ```pong.sym```, which is useful for seeing the labels in the assembly code when debugging in an emulator.
 
 ## How to Execute 
 
-To test the game out, an emulator can be used or it can be run on original hardware using a programmed Flash/EEPROM cartridge or similar. The game executable ```pong.gb``` can be found inside the bin folder once built with ```make``` command. This program has been tested on real hardware, as shown in the GIF, using an SD card flashcard.
+To test the game out, an emulator can be used or it can be run on original hardware using a programmed Flash/EEPROM cartridge or similar. The game executable, ```pong.gb```, can be found inside the bin folder once built with ```make``` command. This program has been tested on real hardware, as shown in the GIF, using an SD card flashcard.
 
 ## Context
 
 Back when I was 15, I wondered if I could program a real videogame. With a quick Google search, I found I could easily make one for the GameBoy using "GB-Studio," but I realized this tool was quite limited for the kind of games I wanted to make back then. 
 
-That led me to learning DMG assembly to have more control over the hardware. After months of being completely lost, something finally clicked when looking at some example code, and I made my first GameBoy game—a pong port—which can be found on an older repo.
+That led me to learning DMG assembly to have more control over the hardware. After months of being completely lost, something finally clicked when looking at some example code, and I made my first GameBoy game—a pong port—which can be found in an older repo.
 
 This set me on track for pursuing my degree in EE. Back then I made a working game, but I didn't understand DMA, Git, or how to be organized when coding. Now that I'm halfway through my bachelor's, I decided in December 2025 to completely rewrite my first GameBoy program; this is it.
 
