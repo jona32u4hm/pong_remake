@@ -1,8 +1,13 @@
 <img width="347" height="325" alt="1770345126649862863285757915093" src="https://github.com/user-attachments/assets/7d7b58ec-bac0-47e0-8263-b05234249332" />
+<img width="373" height="463" alt="1000063495" src="https://github.com/user-attachments/assets/9ea9420e-8b49-4350-b6f1-0460fddb7f20" />
 
 # GB-Pong
 
 This project consists of a pong game for the original Nintendo GameBoy DMG-001, written entirely in assembly. One player uses the D-Pad up and down to control a paddle while the other player uses buttons A and B. Future versions could include Link-Cable support, but I'm planning to concentrate on programming modern hardware in future projects.
+
+## How to Execute 
+
+To test the game out, an emulator can be used or it can be run on original hardware using a programmed Flash/EEPROM cartridge or similar. The game executable ```pong.gb``` can be found inside the bin folder once built with ```make``` command. This program has been tested on real hardware, as shown in the GIF, using an SD card flashcard.
 
 ## Context
 
